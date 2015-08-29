@@ -1,0 +1,17 @@
+{
+    "contents" : "create_cell<-function(nodeName,node){\n  if(length(node)==0 )\n  {\n    assign(nodeName,NA,envir = .GlobalEnv)\n  }else{\n    assign(xmlName(node[[1]]),xmlValue(node[[1]]),envir = .GlobalEnv)\n  }\n  \n}",
+    "created" : 1440877333064.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "732005570",
+    "id" : "1A2BFE61",
+    "lastKnownWriteTime" : 1440874781,
+    "path" : "C:/Users/shany_000/Desktop/clinical_trials_R/R/create_cell.R",
+    "project_path" : "R/create_cell.R",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
