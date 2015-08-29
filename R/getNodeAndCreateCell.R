@@ -1,7 +1,6 @@
 getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(){
   
   table_name<-node
-  
   nodeAddress<-paste("//",node,sep="")
   subnode<<-getNodeSet(xmltop,nodeAddress)
   
