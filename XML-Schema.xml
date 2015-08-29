@@ -1,0 +1,1038 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- ============================================================================================ 
+
+  XML Schema for ClinicalTrials.gov public XML
+  http://clinicaltrials.gov/ct2/html/images/info/public.xsd
+  National Library of Medicine, National Institutes of Health
+  Version: 2015.06.05     
+
+  Change History for schema:
+  12/13/2011 Initial Version
+             Replaces XML DTD at:
+               http://clinicaltrials.gov/ct2/html/images/info/public.dtd
+             Includes specification of study results
+  12/21/2011 Minor revision to remove declaration of namespace
+  07/20/2012 Added other_outcome tag, similar to secondary_outcome
+  07/15/2013 In clinical_results, added population tag to baseline measure.
+             Holds population description
+             Matches population tag in outcome measure
+  07/15/2013 In clinical_results, marked several tags as optional
+  07/15/2013 In clinical_results, added optional comment as text of measurements 
+             tag - used to be just attributes with no text
+  03/27/2014 Added optional target_duration
+  06/05/2015 Added data type restrictions and key/keyref constraints to better
+             document the possible values of most fields. If no constraints are
+             specified in the schema, assume any value is possible.
+
+
+
+  Old Change History, copied from DTD:
+  02/22/2006 Fixed error indicating citation contained textblock             
+  05/19/2006 Added withdrawn status                                          
+  12/12/2006 Added oversight_info                                            
+  01/10/2007 Added nct_alias                                                 
+  03/02/2007 Added has_dmc, why_stopped                                      
+  03/15/2007 Removed last_follow_up, last_data_entry dates                   
+             (end_date contains last_follow_up)                              
+  04/11/2007 added acronym, removed erroneous abbrev                         
+  04/16/2007 added expanded access status values to overall_status           
+  04/19/2007 added measure, time_frame, and number_of_arms                   
+             Moved and renamed expected_enrollment to enrollment             
+  07/18/2007 added tags related to arms and more intervention details        
+             <arm_group> and child nodes                                     
+             intervention /description, /arm_group_label, /other_name        
+  07/21/2007 removed redundant tags (description, arm_group_label)           
+  09/20/2007 changed possible values for overall_status                      
+  10/08/2007 added new elements related to observational studies             
+             (number_of_groups, biospec_retention, biospec_descr,            
+             study_pop, sampling_method)                                     
+  10/11/2007 added optional rank attribute to clinical_study                 
+  01/10/2008 added study_type                                                
+  05/20/2008 added healthy_volunteers to eligibility                         
+  06/19/2008 added primary_completion_date                                   
+             Date when measurement of the primary outcome measure            
+             will be complete                                                
+  06/19/2008 added safety_issue to outcomes                                  
+  02/20/2009 updated comment on phase to match reality                       
+  05/12/2009 added tag <completion_date>                                     
+             This field is the last followup date, when available,           
+             otherwise, end date.  <end_date> tag is now obsolete.           
+  05/12/2009 added optional type attribute to <enrollment>,                  
+             <completion_date>, and <primary_completion_date>.               
+             Attribute will be type="Actual" or type="Anticipated"           
+             when available.                                                 
+  06/04/2009 moved comment which caused validation failure                   
+  10/15/2009 added responsible party when available                          
+  12/01/2009 corrected format for a couple of dates that include day         
+  03/04/2010 removed obsolete always-empty tags, first_name, middle_name,    
+             and degrees.  The tag, last_name holds the entire name.         
+  03/04/2010 added description tag to primary_outcome and                    
+             secondary_outcome.                                              
+  04/02/2010 removed obsolete end_date tag - use completion_date instead     
+  05/21/2010 made more tags optional                                         
+  07/01/2010 made more tags optional - trying to avoid writing empty tags.   
+             Most missing data is due to delayed posting of device records.  
+             A device NOT previously approved or cleared by the US FDA for   
+             any use, as specified in US Public Law 110-85, Title VIII,      
+             Section 801 can delay full posting of the trial information     
+             on ClinicalTrials.gov until after the device has been approved  
+             or cleared.  These records have the following title:  [Trial    
+             of device that is not approved or cleared by the U.S. FDA]      
+  07/14/2010 Added keywords, is_fda_regulated, is_section_801, and           
+             has_expanded_access, when given by data provider                
+  07/14/2010 Added condition_browse and intervention_browse, which are       
+             lists of mesh_terms that are (probably) relevant to the trial   
+             record.  Relevancy is determine programmatically, and can be    
+             wrong.  We fix errors when we see them.                         
+  09/07/2010 Added firstreceived_results_date.  The presence of this tag     
+             indicates that results are available for this trial on          
+             ClinicalTrials.gov.  An XML format of the results info is       
+             currently under review and may soon be available for download.  
+  09/10/2010 Added agency_class to sponsor and collaborators.  Possible      
+             values: NIH, U.S. Fed, Industry, and Other                      
+  10/12/2010 Added location_countries, a list of all countries with a        
+             trial location.  Added removed_countries, a list of all         
+             countries that no longer have a trial location, but had         
+             one in a previous version of the trial record.  The union       
+             of these two lists is all countries that have ever had a        
+             trial location listed in the trial record.                      
+  08/03/2011 Indicate optionality of facility in location                    
+  11/28/2011 Added 4 additional optional fields to <responsible_party>       
+             <responsible_party_type> <investigator_affiliation>             
+             <investigator_full_name> and <investigator_title>.              
+             See comments on responsible party definition below.             
+  12/14/2011 Added optional element, clinical_results, but set no            
+             restrictions on its content.                                    
+  12/14/2011 Retiring this DTD.  Now recommending use of XML Schema at       
+             http://clinicaltrials.gov/ct2/html/images/info/public.xsd       
+        
+ ============================================================================================ -->
+
+<!--
+  Note: information on some device trials can not be provided by
+  ClinicalTrials.gov. The public site displays the following disclaimer for
+  these trials:
+  
+    This trial has been identified as being associated with a clinical device
+    that has not been approved or cleared by the US Food and Drug
+    Administration. Under the terms of US Public Law 110-85, Title VIII,
+    Section 801, the details of this study are not available to the public. 
+  
+  The XML for such trials will contain very little usable information. These
+  trials (and only these trials) will have the study_type set to "N/A".
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- === Generic data types ============================================= -->
+
+  <xs:simpleType name="actual_anticipated_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Actual" />
+      <xs:enumeration value="Anticipated" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="yes_no_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="recruitment_status_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Active, not recruiting" />
+      <xs:enumeration value="Completed" />
+      <xs:enumeration value="Enrolling by invitation" />
+      <xs:enumeration value="Not yet recruiting" />
+      <xs:enumeration value="Recruiting" />
+      <xs:enumeration value="Suspended" />
+      <xs:enumeration value="Terminated" />
+      <xs:enumeration value="Withdrawn" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+<!-- === Required Header ============================================= -->
+
+  <xs:complexType name="required_header_struct">
+    <xs:sequence>
+      <xs:element name="download_date" type="xs:string"/>
+      <xs:element name="link_text" type="xs:string"/>
+      <xs:element name="url" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Id Info ===================================================== -->
+
+  <xs:complexType name="id_info_struct">
+    <xs:sequence>
+      <xs:element name="org_study_id" type="xs:string"/>
+      <xs:element name="secondary_id" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="nct_id" type="xs:string"/>
+      <xs:element name="nct_alias" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Sponsor ===================================================== -->
+
+  <xs:simpleType name="agency_class_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NIH" />
+      <xs:enumeration value="U.S. Fed" />
+      <xs:enumeration value="Industry" />
+      <xs:enumeration value="Other" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="sponsor_struct">
+    <xs:sequence>
+      <xs:element name="agency" type="xs:string"/>
+      <xs:element name="agency_class" type="agency_class_enum"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Sponsors ==================================================== -->
+
+  <xs:complexType name="sponsors_struct">
+    <xs:sequence>
+      <xs:element name="lead_sponsor" type="sponsor_struct"/>
+      <xs:element name="collaborator" type="sponsor_struct" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Oversight =================================================== -->
+
+  <xs:complexType name="oversight_info_struct">
+    <xs:sequence>
+      <xs:element name="authority" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="has_dmc" type="yes_no_enum" minOccurs="0"/> <!-- data monitoring committee -->
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Protocol Outcome ============================================ -->
+
+  <xs:complexType name="protocol_outcome_struct">
+    <xs:sequence>
+      <xs:element name="measure" type="xs:string"/>
+      <xs:element name="time_frame" type="xs:string" minOccurs="0"/>
+      <xs:element name="safety_issue" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Enrollment ================================================== -->
+
+  <xs:complexType name="enrollment_struct">
+    <xs:simpleContent>
+      <xs:extension base="xs:integer">
+        <xs:attribute name="type" type="actual_anticipated_enum" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- === Arm Group =================================================== -->
+
+  <xs:complexType name="arm_group_struct">
+    <xs:sequence>
+      <xs:element name="arm_group_label" type="xs:string"/>
+      <xs:element name="arm_group_type" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Intervention ================================================ -->
+
+  <xs:simpleType name="intervention_type_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Behavioral" />
+      <xs:enumeration value="Biological" />
+      <xs:enumeration value="Device" />
+      <xs:enumeration value="Dietary Supplement" />
+      <xs:enumeration value="Drug" />
+      <xs:enumeration value="Genetic" />
+      <xs:enumeration value="Procedure" />      
+      <xs:enumeration value="Radiation" />
+      <xs:enumeration value="Other" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="intervention_struct">
+    <xs:sequence>
+      <xs:element name="intervention_type" type="intervention_type_enum"/>
+      <xs:element name="intervention_name" type="xs:string"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="arm_group_label" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="other_name" type="xs:string" minOccurs="0" maxOccurs="unbounded"/> <!-- synonyms for intervention_name -->
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Textblock =================================================== -->
+
+  <xs:complexType name="textblock_struct">
+    <xs:sequence>
+      <xs:element name="textblock" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Eligibility ================================================= -->
+
+  <xs:simpleType name="sampling_method_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Probability Sample" />
+      <xs:enumeration value="Non-Probability Sample" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="gender_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Both" />
+      <xs:enumeration value="Female" />
+      <xs:enumeration value="Male" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="age_pattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="N/A|([1-9][0-9]* (Year|Years|Month|Months|Week|Weeks|Day|Days|Hour|Hours|Minute|Minutes))"></xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="eligibility_struct">
+    <xs:sequence>
+      <xs:element name="study_pop" type="textblock_struct" minOccurs="0"/>
+      <xs:element name="sampling_method" type="sampling_method_enum" minOccurs="0"/>
+      <xs:element name="criteria" type="textblock_struct" minOccurs="0"/>
+      <xs:element name="gender" type="xs:string"/>
+      <xs:element name="minimum_age" type="age_pattern"/>
+      <xs:element name="maximum_age" type="age_pattern"/>
+      <xs:element name="healthy_volunteers" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Contact ===================================================== -->
+
+  <xs:complexType name="contact_struct">
+    <xs:sequence>
+      <xs:element name="first_name" type="xs:string" minOccurs="0"/>
+      <xs:element name="middle_name" type="xs:string" minOccurs="0"/>
+      <xs:element name="last_name" type="xs:string" minOccurs="0"/>
+      <xs:element name="degrees" type="xs:string" minOccurs="0"/>
+      <xs:element name="phone" type="xs:string" minOccurs="0"/>
+      <xs:element name="phone_ext" type="xs:string" minOccurs="0"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Investigator ================================================ -->
+
+  <xs:simpleType name="role_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Principal Investigator" />
+      <xs:enumeration value="Sub-Investigator" />
+      <xs:enumeration value="Study Chair" />
+      <xs:enumeration value="Study Director" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="investigator_struct">
+    <xs:sequence>
+      <xs:element name="first_name" type="xs:string" minOccurs="0"/>
+      <xs:element name="middle_name" type="xs:string" minOccurs="0"/>
+      <xs:element name="last_name" type="xs:string"/>
+      <xs:element name="degrees" type="xs:string" minOccurs="0"/>
+      <xs:element name="role" type="role_enum" minOccurs="0"/>
+      <xs:element name="affiliation" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Address ===================================================== -->
+
+  <xs:complexType name="address_struct">
+    <xs:sequence>
+      <xs:element name="city" type="xs:string"/>
+      <xs:element name="state" type="xs:string"  minOccurs="0"/>
+      <xs:element name="zip" type="xs:string"  minOccurs="0"/>
+      <xs:element name="country" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Facility ==================================================== -->
+
+  <xs:complexType name="facility_struct">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="address" type="address_struct" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Location ==================================================== -->
+
+  <xs:complexType name="location_struct">
+    <xs:sequence>
+      <xs:element name="facility" type="facility_struct" minOccurs="0"/>
+      <xs:element name="status" type="recruitment_status_enum" minOccurs="0"/>
+      <xs:element name="contact" type="contact_struct" minOccurs="0"/>
+      <xs:element name="contact_backup" type="contact_struct" minOccurs="0"/>
+      <xs:element name="investigator" type="investigator_struct" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Location Countries ========================================== -->
+
+  <xs:complexType name="countries_struct">
+    <xs:sequence>
+      <xs:element name="country" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Links ======================================================= -->
+
+  <xs:complexType name="link_struct">
+    <xs:sequence>
+      <xs:element name="url" type="xs:string"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === References ================================================== -->
+
+  <xs:complexType name="reference_struct">
+    <xs:sequence>
+      <xs:element name="citation" type="xs:string" minOccurs="0"/>
+      <xs:element name="PMID" type="xs:positiveInteger" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Responsible Party =========================================== -->
+
+  <xs:simpleType name="responsible_party_type_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Sponsor" />
+      <xs:enumeration value="Principal Investigator" />
+      <xs:enumeration value="Sponsor-Investigator" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="responsible_party_struct">
+    <xs:choice>
+      <xs:sequence> <!-- old style -->
+        <xs:element name="name_title" type="xs:string" minOccurs="0"/>
+        <xs:element name="organization" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+      <xs:sequence> <!-- new style, used in newer records -->
+        <xs:element name="responsible_party_type" type="responsible_party_type_enum"/>
+        <xs:element name="investigator_affiliation" type="xs:string" minOccurs="0"/>
+        <xs:element name="investigator_full_name" type="xs:string" minOccurs="0"/>
+        <xs:element name="investigator_title" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+
+<!-- === Browse ====================================================== -->
+
+  <xs:complexType name="browse_struct">
+    <xs:sequence>
+      <xs:element name="mesh_term" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Group ======================================================= -->
+
+  <xs:complexType name="group_struct">
+    <xs:sequence>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="group_id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+<!-- === Participants ================================================ -->
+
+  <xs:complexType name="participants_struct">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="group_id" type="xs:string" use="required"/>
+        <xs:attribute name="count" type="xs:integer"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- === Milestone =================================================== -->
+
+  <xs:complexType name="milestone_struct">
+    <xs:sequence>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="participants_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="participants" type="participants_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Period ====================================================== -->
+
+  <xs:complexType name="period_struct">
+    <xs:sequence>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="milestone_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="milestone" type="milestone_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="drop_withdraw_reason_list" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="drop_withdraw_reason" type="milestone_struct" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Participant Flow ============================================ -->
+
+  <xs:complexType name="participant_flow_struct">
+    <xs:sequence>
+      <xs:element name="recruitment_details" type="xs:string" minOccurs="0"/>
+      <xs:element name="pre_assignment_details" type="xs:string" minOccurs="0"/>
+      <xs:element name="group_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="group" type="group_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="period_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="period" type="period_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Measurement ================================================= -->
+
+  <xs:complexType name="measurement_struct">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="group_id" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string"/>
+        <xs:attribute name="spread" type="xs:string"/>
+        <xs:attribute name="lower_limit" type="xs:string"/>
+        <xs:attribute name="upper_limit" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- === Measure Category ============================================ -->
+
+  <xs:complexType name="measure_category_struct">
+    <xs:sequence>
+      <xs:element name="sub_title" type="xs:string" minOccurs="0"/>
+      <xs:element name="measurement_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="measurement" type="measurement_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Measure ===================================================== -->
+  
+  <xs:simpleType name="outcome_param_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Geometric Mean" />
+      <xs:enumeration value="Least Squares Mean" />
+      <xs:enumeration value="Log Mean" />
+      <xs:enumeration value="Mean" />
+      <xs:enumeration value="Median" />
+      <xs:enumeration value="Number" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="outcome_dispersion_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="90% Confidence Interval" />
+      <xs:enumeration value="95% Confidence Interval" />
+      <xs:enumeration value="Full Range" />
+      <xs:enumeration value="Geometric Coefficient of Variation" />
+      <xs:enumeration value="Inter-Quartile Range" />
+      <xs:enumeration value="Standard Deviation" />
+      <xs:enumeration value="Standard Error" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="measure_struct">
+    <xs:sequence>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="units" type="xs:string" minOccurs="0"/>
+      <xs:element name="param" type="outcome_param_enum" minOccurs="0"/>
+      <xs:element name="dispersion" type="outcome_dispersion_enum" minOccurs="0"/>
+      <xs:element name="category_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="category" type="measure_category_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Baseline ==================================================== -->
+
+  <xs:complexType name="baseline_struct">
+    <xs:sequence>
+      <xs:element name="population" type="xs:string" minOccurs="0"/>
+      <xs:element name="group_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="group" type="group_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="measure_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="measure" type="measure_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Analysis ==================================================== -->
+
+  <xs:simpleType name="n_sides_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1-Sided" />
+      <xs:enumeration value="2-Sided" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="analysis_dispersion_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Standard Deviation" />
+      <xs:enumeration value="Standard Error of the Mean" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="analysis_struct">
+    <xs:sequence>
+      <xs:element name="group_id_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="group_id" type="xs:string" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="groups_desc" type="xs:string" minOccurs="0"/>
+      <xs:element name="non_inferiority" type="yes_no_enum" minOccurs="0"/>
+      <xs:element name="non_inferiority_desc" type="xs:string" minOccurs="0"/>
+      <xs:element name="p_value" type="xs:string" minOccurs="0"/>
+      <xs:element name="p_value_desc" type="xs:string" minOccurs="0"/>
+      <xs:element name="method" type="xs:string" minOccurs="0"/>
+      <xs:element name="method_desc" type="xs:string" minOccurs="0"/>
+      <xs:element name="param_type" type="xs:string" minOccurs="0"/>
+      <xs:element name="param_value" type="xs:string" minOccurs="0"/>
+      <xs:element name="dispersion_type" type="analysis_dispersion_enum" minOccurs="0"/>
+      <xs:element name="dispersion_value" type="xs:string" minOccurs="0"/>
+      <xs:element name="ci_percent" type="xs:float" minOccurs="0"/>
+      <xs:element name="ci_n_sides" type="n_sides_enum" minOccurs="0"/>
+      <xs:element name="ci_lower_limit" type="xs:string" minOccurs="0"/>
+      <xs:element name="ci_upper_limit" type="xs:string" minOccurs="0"/>
+      <xs:element name="ci_upper_limit_na_comment" type="xs:string" minOccurs="0"/>
+      <xs:element name="estimate_desc" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Results Outcome ============================================= -->
+
+  <xs:simpleType name="outcome_type_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Primary" />
+      <xs:enumeration value="Secondary" />
+      <xs:enumeration value="Other Pre-specified" />
+      <xs:enumeration value="Post-Hoc"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="posting_date_type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(((0[1-9])|(10|11|12))/)?[1-3][0-9]{3}"></xs:pattern> <!-- month/year or just year -->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="results_outcome_struct">
+    <xs:sequence>
+      <xs:element name="type" type="outcome_type_enum"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="time_frame" type="xs:string"/>
+      <xs:element name="safety_issue" type="yes_no_enum" minOccurs="0"/>
+      <xs:element name="posting_date" type="posting_date_type" minOccurs="0"/>
+      <xs:element name="population" type="xs:string" minOccurs="0"/>
+      <xs:element name="group_list" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="group" type="group_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="measure_list" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="measure" type="measure_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="analysis_list" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="analysis" type="analysis_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Vocab Term =================================================== -->
+
+  <xs:complexType name="vocab_term_struct">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="vocab" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- === Event Counts ================================================= -->
+
+  <xs:complexType name="event_counts_struct">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="group_id" type="xs:string"/>
+        <xs:attribute name="subjects_affected" type="xs:integer"/>
+        <xs:attribute name="subjects_at_risk" type="xs:integer"/>
+        <xs:attribute name="events" type="xs:integer"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- === Event ======================================================= -->
+  
+  <xs:simpleType name="event_assessment_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Non-systematic Assessment" />
+      <xs:enumeration value="Systematic Assessment" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="event_struct">
+    <xs:sequence>
+      <xs:element name="sub_title" type="vocab_term_struct"/>
+      <xs:element name="assessment" type="event_assessment_enum" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="counts" type="event_counts_struct" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Event Category ============================================== -->
+
+  <xs:complexType name="event_category_struct">
+    <xs:sequence>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="event_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="event" type="event_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Events ====================================================== -->
+
+  <xs:complexType name="events_struct">
+    <xs:sequence>
+      <xs:element name="frequency_threshold" type="xs:string" minOccurs="0"/>
+      <xs:element name="default_vocab" type="xs:string" minOccurs="0"/>
+      <xs:element name="default_assessment" type="event_assessment_enum" minOccurs="0"/>
+      <xs:element name="category_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="category" type="event_category_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Reported Events ============================================= -->
+
+  <xs:complexType name="reported_events_struct">
+    <xs:sequence>
+      <xs:element name="time_frame" type="xs:string" minOccurs="0"/>
+      <xs:element name="desc" type="xs:string" minOccurs="0"/>
+      <xs:element name="group_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="group" type="group_struct" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="serious_events" type="events_struct" minOccurs="0"/>
+      <xs:element name="other_events" type="events_struct" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Certain Agreements ========================================== -->
+
+  <xs:simpleType name="pi_employee_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="All Principal Investigators ARE employed by the organization sponsoring the study." />
+      <xs:enumeration value="Principal Investigators are NOT employed by the organization sponsoring the study." />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="certain_agreements_struct">
+    <xs:sequence>
+      <xs:element name="pi_employee" type="pi_employee_enum" minOccurs="0"/>
+      <xs:element name="restrictive_agreement" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Point Of Contact ============================================ -->
+
+  <xs:complexType name="point_of_contact_struct">
+    <xs:sequence>
+      <xs:element name="name_or_title" type="xs:string"/>
+      <xs:element name="organization" type="xs:string"/>
+      <xs:element name="phone" type="xs:string" minOccurs="0"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Clinical Results ============================================ -->
+
+  <xs:complexType name="clinical_results_struct">
+    <xs:sequence>
+      <xs:element name="participant_flow" type="participant_flow_struct">
+        <xs:key name="participant_flow_group_key">
+          <xs:selector xpath="group_list/group" />
+          <xs:field xpath="@group_id" />
+        </xs:key>
+        <xs:keyref name="participant_flow_group_ref" refer="participant_flow_group_key">
+          <xs:selector xpath="period_list/period/milestone_list/milestone/participants_list/participants" />
+          <xs:field xpath="@group_id" />
+        </xs:keyref>
+      </xs:element>
+      <xs:element name="baseline" type="baseline_struct">
+        <xs:key name="baseline_group_key">
+          <xs:selector xpath="group_list/group" />
+          <xs:field xpath="@group_id" />
+        </xs:key>
+        <xs:keyref name="baseline_group_ref" refer="baseline_group_key">
+          <xs:selector xpath="measure_list/measure/category_list/category/measurement_list/measurement" />
+          <xs:field xpath="@group_id" />
+        </xs:keyref>
+      </xs:element>
+      <xs:element name="outcome_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="outcome" type="results_outcome_struct" maxOccurs="unbounded">
+              <xs:key name="outcome_group_key">
+                <xs:selector xpath="group_list/group" />
+                <xs:field xpath="@group_id" />
+              </xs:key>
+              <xs:keyref name="outcome_group_ref" refer="outcome_group_key">
+                <xs:selector xpath="measure_list/measure/category_list/category/measurement_list/measurement" />
+                <xs:field xpath="@group_id" />
+              </xs:keyref>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="reported_events" type="reported_events_struct" minOccurs="0">
+        <xs:key name="events_group_key">
+          <xs:selector xpath="group_list/group" />
+          <xs:field xpath="@group_id" />
+        </xs:key>
+        <xs:keyref name="serious_events_group_ref" refer="events_group_key">
+          <xs:selector xpath="serious_events/category_list/category/event_list/event/counts" />
+          <xs:field xpath="@group_id" />
+        </xs:keyref>
+        <xs:keyref name="other_events_group_ref" refer="events_group_key">
+          <xs:selector xpath="other_events/category_list/category/event_list/event/counts" />
+          <xs:field xpath="@group_id" />
+        </xs:keyref>
+      </xs:element>
+      <xs:element name="certain_agreements" type="certain_agreements_struct" minOccurs="0"/>
+      <xs:element name="limitations_and_caveats" type="xs:string" minOccurs="0"/>
+      <xs:element name="point_of_contact" type="point_of_contact_struct" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<!-- === Date ======================================================== -->
+  
+  <xs:simpleType name="year_month_day_type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(January|February|March|April|May|June|July|August|September|October|November|December) ([12]?[0-9]|30|31), [12][0-9]{3}" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="year_month_type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(January|February|March|April|May|June|July|August|September|October|November|December) [12][0-9]{3}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="year_month_struct">
+    <xs:simpleContent>
+      <xs:extension base="year_month_type">
+        <xs:attribute name="type" type="actual_anticipated_enum" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+<!-- === Clinical Study ============================================== -->
+
+  <xs:simpleType name="expanded_access_status_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Available" />
+      <xs:enumeration value="No longer available" />
+      <xs:enumeration value="Temporarily not available" />
+      <xs:enumeration value="Approved for marketing" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="redacted_record_status_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Withheld"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <!--
+    Valid values for overall status depend on the value for study type:
+     - For "Expanded Access", any value from expanded_access_status_enum
+     - For "N/A", any value from redacted_record_status_enum
+     - Otherwise, any value from recruitment_status_enum
+   -->
+  <xs:simpleType name="overall_status_enum">
+    <xs:union memberTypes="recruitment_status_enum expanded_access_status_enum redacted_record_status_enum"></xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="study_type_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Expanded Access" />
+      <xs:enumeration value="Interventional" />
+      <xs:enumeration value="N/A" /> <!-- Redacted records only -->
+      <xs:enumeration value="Observational" />
+      <xs:enumeration value="Observational [Patient Registry]" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="phase_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="N/A" />
+      <xs:enumeration value="Phase 0" />
+      <xs:enumeration value="Phase 1" />
+      <xs:enumeration value="Phase 1/Phase 2" />
+      <xs:enumeration value="Phase 2" />
+      <xs:enumeration value="Phase 2/Phase 3" />
+      <xs:enumeration value="Phase 3" />
+      <xs:enumeration value="Phase 4" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="biospec_retention_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None Retained" />
+      <xs:enumeration value="Samples With DNA" />
+      <xs:enumeration value="Samples Without DNA" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="clinical_study">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="required_header" type="required_header_struct"/> <!--included-->
+        <xs:element name="id_info" type="id_info_struct"/> <!-- not included-->
+        <xs:element name="brief_title" type="xs:string"/> <!--included-->
+        <xs:element name="acronym" type="xs:string" minOccurs="0"/> <!--included-->
+        <xs:element name="official_title" type="xs:string" minOccurs="0"/> <!--included-->
+        <xs:element name="sponsors" type="sponsors_struct"/> <!-- not included-->
+        <xs:element name="source" type="xs:string"/> <!--included-->
+        <xs:element name="oversight_info" type="oversight_info_struct" minOccurs="0"/> <!-- not included-->
+        <xs:element name="brief_summary" type="textblock_struct" minOccurs="0"/> <!--  included-->
+        <xs:element name="detailed_description" type="textblock_struct" minOccurs="0"/> <!--  included-->
+        <xs:element name="overall_status" type="overall_status_enum"/><!--  included-->
+        <xs:element name="why_stopped" type="xs:string" minOccurs="0"/> <!-- not included-->
+        <xs:element name="start_date" type="year_month_type" minOccurs="0"/> <!--  included-->
+        <xs:element name="completion_date" type="year_month_struct" minOccurs="0"/> <!--  included-->
+        <xs:element name="primary_completion_date" type="year_month_struct" minOccurs="0"/> <!--  included-->
+        <xs:element name="phase" type="phase_enum"/> <!--  included-->
+        <xs:element name="study_type" type="study_type_enum"/> <!--  included-->
+        <xs:element name="study_design" type="xs:string"/><!--  included-->
+        <xs:element name="target_duration" type="xs:string" minOccurs="0"/> <!-- not included-->
+        <xs:element name="primary_outcome" type="protocol_outcome_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="secondary_outcome" type="protocol_outcome_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="other_outcome" type="protocol_outcome_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="number_of_arms" type="xs:integer" minOccurs="0"/> <!--  included-->
+        <xs:element name="number_of_groups" type="xs:integer" minOccurs="0"/><!--  included-->
+        <xs:element name="enrollment" type="enrollment_struct" minOccurs="0"/> <!-- not included-->
+        <xs:element name="condition" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="arm_group" type="arm_group_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="intervention" type="intervention_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="biospec_retention" type="biospec_retention_enum" minOccurs="0"/>
+        <xs:element name="biospec_descr" type="textblock_struct" minOccurs="0"/>
+        <xs:element name="eligibility" type="eligibility_struct" minOccurs="0"/>
+        <xs:element name="overall_official" type="investigator_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="overall_contact" type="contact_struct" minOccurs="0"/>
+        <xs:element name="overall_contact_backup" type="contact_struct" minOccurs="0"/>
+        <xs:element name="location" type="location_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="location_countries" type="countries_struct" minOccurs="0"/>
+        <xs:element name="removed_countries" type="countries_struct" minOccurs="0"/>
+        <xs:element name="link" type="link_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="reference" type="reference_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="results_reference" type="reference_struct" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="verification_date" type="year_month_type" minOccurs="0"/>
+        <xs:element name="lastchanged_date" type="year_month_day_type" minOccurs="0"/>
+        <xs:element name="firstreceived_date" type="year_month_day_type"/>
+        <xs:element name="firstreceived_results_date" type="year_month_day_type" minOccurs="0"/>
+        <xs:element name="responsible_party" type="responsible_party_struct" minOccurs="0"/>
+        <xs:element name="keyword" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="is_fda_regulated" type="yes_no_enum" minOccurs="0"/>
+        <xs:element name="is_section_801" type="yes_no_enum" minOccurs="0"/>
+        <xs:element name="has_expanded_access" type="yes_no_enum" minOccurs="0"/>
+        <xs:element name="condition_browse" type="browse_struct" minOccurs="0"/>
+        <xs:element name="intervention_browse" type="browse_struct" minOccurs="0"/>
+        <xs:element name="clinical_results" type="clinical_results_struct" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="rank" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:key name="arm_group_label_key">
+      <xs:selector xpath="arm_group" />
+      <xs:field xpath="arm_group_label" />
+    </xs:key>
+    <xs:keyref name="arm_group_label_ref_intervention" refer="arm_group_label_key">
+      <xs:selector xpath="intervention/arm_group_label" />
+      <xs:field xpath="." />
+    </xs:keyref>
+  </xs:element>
+
+</xs:schema>
+
