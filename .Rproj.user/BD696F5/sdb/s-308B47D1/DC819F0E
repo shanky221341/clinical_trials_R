@@ -1,12 +1,12 @@
 {
-    "contents" : "getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(){\n  \n  table_name<-node\n  nodeAddress<-paste(\"//\",node,sep=\"\")\n  subnode<<-getNodeSet(xmltop,nodeAddress)\n  \n  xmlSubNodes<-other_tables[[node]]\n  counter=0\n  for(node in subnode){\n    counter=counter+1\n    sub_node<<-node\n    \n    for (node in xmlSubNodes){\n      nodeName<-node\n      nodeAddress<-paste(\"//\",node,sep=\"\")\n      node<-getNodeSet(sub_node,nodeAddress)\n      if(nodeName=='time_frame')\n      {print(node)}\n      if(nodeName!='nct_id')\n        create_cell(nodeName,node)\n      \n    }\n    if(counter==1){\n      \n      xmlSubNodes<-append(\"nct_id\",xmlSubNodes)\n    }\n    char_vect<-sapply(xmlSubNodes,function(x)eval(parse(text=x)))\n    assign(table_name,data.frame(as.list(char_vect)),envir = .GlobalEnv)\n    \n    #print(primary_outcome)\n    temp1<<-rbind(temp1,primary_outcome)\n  }\n}\n\ngetNodeAndCreateCell<-function(node){\n  if(node %in% names(other_tables))\n  {\n    getNodeAndCreateSeparateTableForNodeswithMultipleChild(node)\n    \n    \n  }else{\n    nodeName<-node\n    nodeAddress<-paste(\"//\",node,sep=\"\")\n    node<-getNodeSet(xmltop,nodeAddress)\n    create_cell(nodeName,node)\n  }\n}",
+    "contents" : "getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(node){\n  \n  table_name<-node\n  nodeAddress<-paste(\"//\",node,sep=\"\")\n  subnode<<-getNodeSet(xmltop,nodeAddress)\n  \n  xmlSubNodes<-other_tables[[node]]\n  counter=0\n  for(node in subnode){\n    counter=counter+1\n    sub_node<<-node\n    \n    for (node in xmlSubNodes){\n      nodeName<-node\n      nodeAddress<-paste(\"//\",node,sep=\"\")\n      node<-getNodeSet(sub_node,nodeAddress)\n      if(nodeName!='nct_id')\n        create_cell(nodeName,node)\n      \n    }\n    if(counter==1){\n      \n      xmlSubNodes<-append(\"nct_id\",xmlSubNodes)\n    }\n    char_vect<-sapply(xmlSubNodes,function(x)eval(parse(text=x)))\n    assign(table_name,data.frame(as.list(char_vect)),envir = .GlobalEnv)\n    \n    #print(primary_outcome)\n    temp1<<-rbind(temp1,eval(parse(text=table_name)))\n  }\n}\n\ngetNodeAndCreateCell<-function(node){\n  if(node %in% names(other_tables))\n  {\n    getNodeAndCreateSeparateTableForNodeswithMultipleChild(node)\n    #print(nrow(temp1))\n    assign(node,temp1,envir = .GlobalEnv)\n    \n  }else{\n    nodeName<-node\n    nodeAddress<-paste(\"//\",node,sep=\"\")\n    node<-getNodeSet(xmltop,nodeAddress)\n    create_cell(nodeName,node)\n  }\n}",
     "created" : 1440877896643.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3862009226",
+    "hash" : "2441774741",
     "id" : "DC819F0E",
-    "lastKnownWriteTime" : 1440879167,
+    "lastKnownWriteTime" : 1440885020,
     "path" : "C:/Users/shany_000/Desktop/clinical_trials_R/R/getNodeAndCreateCell.R",
     "project_path" : "R/getNodeAndCreateCell.R",
     "properties" : {

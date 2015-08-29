@@ -1,4 +1,4 @@
-getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(){
+getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(node){
   
   table_name<-node
   nodeAddress<-paste("//",node,sep="")
@@ -14,8 +14,6 @@ getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(){
       nodeName<-node
       nodeAddress<-paste("//",node,sep="")
       node<-getNodeSet(sub_node,nodeAddress)
-      if(nodeName=='time_frame')
-      {print(node)}
       if(nodeName!='nct_id')
         create_cell(nodeName,node)
       
@@ -28,7 +26,7 @@ getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(){
     assign(table_name,data.frame(as.list(char_vect)),envir = .GlobalEnv)
     
     #print(primary_outcome)
-    temp1<<-rbind(temp1,primary_outcome)
+    temp1<<-rbind(temp1,eval(parse(text=table_name)))
   }
 }
 
@@ -36,7 +34,8 @@ getNodeAndCreateCell<-function(node){
   if(node %in% names(other_tables))
   {
     getNodeAndCreateSeparateTableForNodeswithMultipleChild(node)
-    
+    #print(nrow(temp1))
+    assign(node,temp1,envir = .GlobalEnv)
     
   }else{
     nodeName<-node
