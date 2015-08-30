@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1440931262846.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BBE6C8A2",
+    "lastKnownWriteTime" : 32651556867473509,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "pubhu3h9j5",
+        "caption" : "arm_group",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=arm_group&cache_key=pubhu3h9j5",
+        "displayedObservations" : "17",
+        "environment" : "",
+        "object" : "arm_group",
+        "totalObservations" : "17",
+        "variables" : "4"
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
