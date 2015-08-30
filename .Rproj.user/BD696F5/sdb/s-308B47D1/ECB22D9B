@@ -10,14 +10,14 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "mfqq913npv",
+        "cacheKey" : "wth67ur6qe",
         "caption" : "observation",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=observation&cache_key=mfqq913npv",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=observation&cache_key=wth67ur6qe",
         "displayedObservations" : "10",
         "environment" : "",
         "object" : "observation",
         "totalObservations" : "10",
-        "variables" : "19"
+        "variables" : "23"
     },
     "relative_order" : 3,
     "source_on_save" : false,
