@@ -26,7 +26,9 @@ getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(node){
     assign(table_name,data.frame(as.list(char_vect)),envir = .GlobalEnv)
     
     #print(primary_outcome)
-    temp1<<-rbind(temp1,eval(parse(text=table_name)))
+    var_name<-paste(table_name,"temp",sep="_")
+    #print(var_name)
+    assign(var_name,rbind(eval(parse(text=var_name)),eval(parse(text=table_name))),envir = .GlobalEnv)
   }
 }
 
@@ -35,7 +37,9 @@ getNodeAndCreateCell<-function(node){
   {
     getNodeAndCreateSeparateTableForNodeswithMultipleChild(node)
     #print(nrow(temp1))
-    assign(node,temp1,envir = .GlobalEnv)
+    #assign(node,temp1,envir = .GlobalEnv)
+    var_name<-paste(node,"temp",sep="_")
+    assign(node,eval(parse(text=var_name)),envir = .GlobalEnv)
     
   }else{
     nodeName<-node
