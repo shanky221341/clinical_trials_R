@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1440941920488.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7AAB6BC1",
+    "lastKnownWriteTime" : 32651556867473509,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "jsifqnk9of",
+        "caption" : "eligibility",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=eligibility&cache_key=jsifqnk9of",
+        "displayedObservations" : 10,
+        "environment" : "",
+        "object" : "eligibility",
+        "totalObservations" : 10,
+        "variables" : 7
+    },
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

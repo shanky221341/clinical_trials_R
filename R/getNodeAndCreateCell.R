@@ -23,6 +23,13 @@ getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(node){
       
       xmlSubNodes<-append("nct_id",xmlSubNodes)
     }
+    
+    for(i in 1:length(xmlSubNodes)){
+      if(grepl("/",xmlSubNodes[i])){
+        xmlSubNodes[i]<-unlist(strsplit(xmlSubNodes[i],split="/"))[1]
+      }
+    }
+    
     char_vect<-sapply(xmlSubNodes,function(x)eval(parse(text=x)))
     assign(table_name,data.frame(as.list(char_vect)),envir = .GlobalEnv)
     
@@ -46,7 +53,6 @@ getNodeAndCreateCell<-function(node){
     nodeName<-node
     nodeAddress<-paste("//",node,sep="")
     node<-getNodeSet(xmltop,nodeAddress)
-    print(nodeName)
     create_cell(nodeName,node)
   }
 }
