@@ -57,3 +57,4 @@ rm(list=temporary_variables)
 observation<-temp
 results<-temp1
 rm(temp)
+rm(temp1)

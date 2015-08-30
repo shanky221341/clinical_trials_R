@@ -3,8 +3,8 @@ handleResultsDatabaseSeparately<-function(file){
   #create the group_table
   xmlDoc<-xmlTreeParse(file)
   xmltop<<-xmlRoot(xmlDoc)
-  # node_temp<-getNodeSet(xmltop,"//nct_id")
-  # assign(xmlName(node_temp[[1]]),xmlValue(node_temp[[1]]),envir = .GlobalEnv)
+  node_temp<-getNodeSet(xmltop,"//nct_id")
+   assign(xmlName(node_temp[[1]]),xmlValue(node_temp[[1]]),envir = .GlobalEnv)
   xmlNodes<<-c("group","recruitment_details","pre_assignment_details")
   
   for(node in xmlNodes){
@@ -62,6 +62,6 @@ handleResultsDatabaseSeparately<-function(file){
       }
   }
   
-  results<<-data.frame(recruitment_details,pre_assignment_details,stringsAsFactors = FALSE)
+  results<<-data.frame(nct_id,recruitment_details,pre_assignment_details,stringsAsFactors = FALSE)
   temp1<<-rbind(temp1,results)
 }
