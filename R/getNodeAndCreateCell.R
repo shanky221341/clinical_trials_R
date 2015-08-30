@@ -3,8 +3,8 @@ getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(node){
   table_name<-node
   nodeAddress<-paste("//",node,sep="")
   subnode<<-getNodeSet(xmltop,nodeAddress)
-  print(node)
-  print(length(subnode))
+  #print(node)
+  #print(length(subnode))
   
   xmlSubNodes<-other_tables[[node]]
   counter=0
@@ -46,6 +46,7 @@ getNodeAndCreateCell<-function(node){
     nodeName<-node
     nodeAddress<-paste("//",node,sep="")
     node<-getNodeSet(xmltop,nodeAddress)
+    print(nodeName)
     create_cell(nodeName,node)
   }
 }

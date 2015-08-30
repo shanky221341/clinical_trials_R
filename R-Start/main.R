@@ -26,14 +26,14 @@ xmltop<<-xmlRoot(xmlDoc)
 #get the node
 
 
-xmlNodes<-c("nct_id","brief_title","acronym","official_title","source","brief_summary/textblock","detailed_description/textblock","overall_status","start_date","completion_date","primary_completion_date","phase","study_type","study_design","target_duration","number_of_arms","number_of_groups","primary_outcome","secondary_outcome","other_outcome","condition","arm_group","intervention","biospec_retention","biospec_descr")
+xmlNodes<-c("nct_id","brief_title","acronym","official_title","source","brief_summary/textblock","detailed_description/textblock","overall_status","start_date","completion_date","primary_completion_date","phase","study_type","study_design","target_duration","number_of_arms","number_of_groups","primary_outcome","secondary_outcome","other_outcome","condition","arm_group","intervention","biospec_retention","biospec_descr/textblock")
 #xmlNodes<-c("primary_outcome")
 
 sapply(xmlNodes,function(node) getNodeAndCreateCell(node))
 
-observation<<-data.frame(nct_id,brief_title,acronym,official_title,source,textblock,textblock,overall_status,start_date,completion_date,primary_completion_date,phase,study_type,study_design,target_duration,number_of_arms,number_of_groups,biospec_retention,biospec_descr,stringsAsFactors = FALSE)
-names(observation)[6]<-"brief_summary"
-names(observation)[7]<-"det-description"
+observation<<-data.frame(nct_id,brief_title,acronym,official_title,source,brief_summary,detailed_description,overall_status,start_date,completion_date,primary_completion_date,phase,study_type,study_design,target_duration,number_of_arms,number_of_groups,biospec_retention,biospec_descr,stringsAsFactors = FALSE)
+#names(observation)[6]<-"brief_summary"
+#names(observation)[7]<-"det-description"
 temp<<-rbind(temp,observation)
 }
 

@@ -1,12 +1,12 @@
 {
-    "contents" : "create_cell<-function(nodeName,node){\n  if(length(node)==0 )\n  {\n    assign(nodeName,NA,envir = .GlobalEnv)\n  }else{\n    assign(xmlName(node[[1]]),xmlValue(node[[1]]),envir = .GlobalEnv)\n  }\n  \n}",
+    "contents" : "create_cell<-function(nodeName,node){\n  if(length(node)==0 )\n  {\n    if(grepl(\"/\",nodeName)){\n      #print(nodeName)\n      nodeName<-unlist(strsplit(nodeName,split=\"/\"))[1]\n    }\n    assign(nodeName,NA,envir = .GlobalEnv)\n  }else{\n    colName<-xmlName(node[[1]])\n    #print(nodeName)\n    if(grepl(\"/\",nodeName)){\n      #print(nodeName)\n      colName<-unlist(strsplit(nodeName,split=\"/\"))[1]\n    }\n    assign(colName,xmlValue(node[[1]]),envir = .GlobalEnv)\n  }\n  \n}",
     "created" : 1440877333064.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "732005570",
+    "hash" : "216263106",
     "id" : "1A2BFE61",
-    "lastKnownWriteTime" : 1440874781,
+    "lastKnownWriteTime" : 1440939737,
     "path" : "C:/Users/shany_000/Desktop/clinical_trials_R/R/create_cell.R",
     "project_path" : "R/create_cell.R",
     "properties" : {
