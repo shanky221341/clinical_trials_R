@@ -10,14 +10,14 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "ud671pj5md",
+        "cacheKey" : "vs5drgcxdb",
         "caption" : "group",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=group&cache_key=ud671pj5md",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=group&cache_key=vs5drgcxdb",
         "displayedObservations" : "301",
         "environment" : "",
         "object" : "group",
         "totalObservations" : "301",
-        "variables" : "3"
+        "variables" : "4"
     },
     "relative_order" : 5,
     "source_on_save" : false,

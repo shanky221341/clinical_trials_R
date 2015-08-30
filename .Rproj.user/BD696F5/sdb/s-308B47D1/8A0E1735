@@ -1,18 +1,17 @@
 {
     "contents" : "handleResultsDatabaseSeparately<-function(file){\n  \n  #create the group_table\n  xmlDoc<-xmlTreeParse(file)\n  xmltop<<-xmlRoot(xmlDoc)\n  # node_temp<-getNodeSet(xmltop,\"//nct_id\")\n  # assign(xmlName(node_temp[[1]]),xmlValue(node_temp[[1]]),envir = .GlobalEnv)\n  xmlNodes<<-c(\"group\",\"recruitment_details\",\"pre_assignment_details\")\n  \n  for(node in xmlNodes){\n  \n    if(node %in% names(other_tables))\n      {\n        table_name<-node\n        nodeAddress<-paste(\"//\",node,sep=\"\")\n        subnode<<-getNodeSet(xmltop,nodeAddress)\n        \n        xmlSubNodes<-other_tables[[node]]\n        \n        counter=0\n        for(node in subnode){\n          counter=counter+1\n          sub_node<<-node\n          if(xmlName(sub_node)==\"group\"){\n            #print(\"yes\")\n            group_id<<-xmlGetAttr(sub_node,\"group_id\")\n            print(group_id)\n          }\n          for (node in xmlSubNodes){\n            nodeName<-node\n            nodeAddress<-paste(\"//\",node,sep=\"\")\n            node<-getNodeSet(sub_node,nodeAddress)\n            if(!(nodeName %in% c('nct_id','group_id')))\n              create_cell(nodeName,node)\n            \n          }\n          if(counter==1){\n            xmlSubNodes<-append(\"group_id\",xmlSubNodes)\n            xmlSubNodes<-append(\"nct_id\",xmlSubNodes)\n          }\n          \n          for(i in 1:length(xmlSubNodes)){\n            if(grepl(\"/\",xmlSubNodes[i])){\n              xmlSubNodes[i]<-unlist(strsplit(xmlSubNodes[i],split=\"/\"))[1]\n            }\n          }\n          \n          char_vect<-sapply(xmlSubNodes,function(x)eval(parse(text=x)))\n          assign(table_name,data.frame(as.list(char_vect)),envir = .GlobalEnv)\n          \n          #print(primary_outcome)\n          var_name<-paste(table_name,\"temp\",sep=\"_\")\n          #print(var_name)\n          assign(var_name,rbind(eval(parse(text=var_name)),eval(parse(text=table_name))),envir = .GlobalEnv)\n        }\n    \n    }else{\n      nodeName<-node\n      nodeAddress<-paste(\"//\",node,sep=\"\")\n      node<-getNodeSet(xmltop,nodeAddress)\n      create_cell(nodeName,node)  \n      }\n  }\n  \n  results<<-data.frame(recruitment_details,pre_assignment_details,stringsAsFactors = FALSE)\n  temp1<<-rbind(temp1,results)\n}",
-    "created" : 1440966932847.000,
+    "created" : 1440976368814.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "52054237",
-    "id" : "6355BF8B",
+    "id" : "8A0E1735",
     "lastKnownWriteTime" : 1440976660,
-    "path" : "C:/Users/shany_000/Desktop/clinical_trials_R/R/handleResultsDatabaseSeparately.R",
-    "project_path" : "R/handleResultsDatabaseSeparately.R",
+    "path" : "C:/Users/shany_000/Desktop/clinical_trials_R/search_result(2)/../R/handleResultsDatabaseSeparately.R",
+    "project_path" : "search_result(2)/../R/handleResultsDatabaseSeparately.R",
     "properties" : {
-        "tempName" : "Untitled1"
     },
-    "relative_order" : 7,
+    "relative_order" : 9,
     "source_on_save" : false,
     "type" : "r_source"
 }

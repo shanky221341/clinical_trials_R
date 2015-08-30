@@ -6,7 +6,7 @@ path<-list.files(pattern="[.]R$", path="../R/", full.names=TRUE)
 sapply(path, source)
 
 temp<-NULL
-
+temp1<<-NULL
 outcome_struct<-c("measure","time_frame","safety_issue","description")
 condition_struct<-c("condition")
 arm_group_struct<-c("arm_group_label","arm_group_type","description")
@@ -23,7 +23,7 @@ other_tables<<-list(primary_outcome=outcome_struct,secondary_outcome=outcome_str
 temporary_variables<<-paste(names(other_tables),"temp",sep="_")
 for(var in temporary_variables){assign(var,NULL)}
 
-xmlNodes<<-c("group")
+xmlNodesResults<<-c("group")
 create_observation<-function(file)
 {
 xmlDoc<-xmlTreeParse(file)
@@ -44,13 +44,16 @@ temp<<-rbind(temp,observation)
 
 files<-dir()
 #sapply(files,function(file) create_observation(file))
+
 sapply(files,function(file) handleResultsDatabaseSeparately(file))
 
-xml_names<-sapply(xmlNodes,function(node)paste(node,"temp",sep="_"))
+xml_names<-sapply(xmlNodesResults,function(node)paste(node,"temp",sep="_"))
 
-for(i in 1:length(xmlNodes)){
-  assign(xmlNodes[i],eval(parse(text=xml_names[i])),envir = .GlobalEnv)  
+for(i in 1:length(xmlNodesResults)){
+  assign(xmlNodesResults[i],eval(parse(text=xml_names[i])),envir = .GlobalEnv)  
 }
+
 rm(list=temporary_variables)
 observation<-temp
+results<-temp1
 rm(temp)
