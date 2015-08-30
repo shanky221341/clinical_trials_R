@@ -10,14 +10,14 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "2lz51e42fe",
+        "cacheKey" : "efeptdzlgx",
         "caption" : "intervention",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=intervention&cache_key=2lz51e42fe",
-        "displayedObservations" : 12,
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=intervention&cache_key=efeptdzlgx",
+        "displayedObservations" : "12",
         "environment" : "",
         "object" : "intervention",
-        "totalObservations" : 12,
-        "variables" : 6
+        "totalObservations" : "12",
+        "variables" : "6"
     },
     "relative_order" : 12,
     "source_on_save" : false,

@@ -43,6 +43,8 @@ getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(node){
 getNodeAndCreateCell<-function(node){
   if(node %in% names(other_tables))
   {
+    #if(node=='overall_official')
+      print(node)
     getNodeAndCreateSeparateTableForNodeswithMultipleChild(node)
     #print(nrow(temp1))
     #assign(node,temp1,envir = .GlobalEnv)

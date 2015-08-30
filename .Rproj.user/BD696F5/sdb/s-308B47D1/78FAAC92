@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1440955109408.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "78FAAC92",
+    "lastKnownWriteTime" : 0,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "bw213outo4",
+        "caption" : "overall_official",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=overall_official&cache_key=bw213outo4",
+        "displayedObservations" : "13",
+        "environment" : "",
+        "object" : "overall_official",
+        "totalObservations" : "13",
+        "variables" : "7"
+    },
+    "relative_order" : 14,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
