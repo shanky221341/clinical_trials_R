@@ -10,7 +10,9 @@ temp1<-NULL
 temp2<-NULL
 
 outcome_struct<-c("measure","time_frame","safety_issue","description")
-other_tables<<-list(primary_outcome=outcome_struct,secondary_outcome=outcome_struct)
+condition_struct<-c("condition")
+arm_group_struct<-c("arm_group_label","arm_group_type","description")
+other_tables<<-list(primary_outcome=outcome_struct,secondary_outcome=outcome_struct,other_outcome=outcome_struct,condition=condition_struct,arm_group=arm_group_struct)
 
 temporary_variables<<-paste(names(other_tables),"temp",sep="_")
 a<-c(1,1,1,1,1)
@@ -23,7 +25,7 @@ xmltop<<-xmlRoot(xmlDoc)
 #get the node
 
 
-xmlNodes<-c("nct_id","brief_title","acronym","official_title","source","brief_summary/textblock","detailed_description/textblock","overall_status","start_date","completion_date","primary_completion_date","phase","study_type","study_design","target_duration","number_of_arms","number_of_groups","primary_outcome","secondary_outcome")
+xmlNodes<-c("nct_id","brief_title","acronym","official_title","source","brief_summary/textblock","detailed_description/textblock","overall_status","start_date","completion_date","primary_completion_date","phase","study_type","study_design","target_duration","number_of_arms","number_of_groups","primary_outcome","secondary_outcome","other_outcome","condition","arm_group")
 #xmlNodes<-c("primary_outcome")
 
 sapply(xmlNodes,function(node) getNodeAndCreateCell(node))

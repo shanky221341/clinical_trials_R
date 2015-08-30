@@ -3,13 +3,14 @@ getNodeAndCreateSeparateTableForNodeswithMultipleChild<-function(node){
   table_name<-node
   nodeAddress<-paste("//",node,sep="")
   subnode<<-getNodeSet(xmltop,nodeAddress)
+  print(node)
+  print(length(subnode))
   
   xmlSubNodes<-other_tables[[node]]
   counter=0
   for(node in subnode){
     counter=counter+1
     sub_node<<-node
-    
     for (node in xmlSubNodes){
       nodeName<-node
       nodeAddress<-paste("//",node,sep="")
