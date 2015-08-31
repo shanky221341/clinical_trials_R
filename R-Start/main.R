@@ -21,12 +21,14 @@ responsible_party_struct<-c("name_title","organization","responsible_party_type"
 #structs for results database
 group_struct<-c("title","description")
 participant_struct<-c("participant_id")
-other_tables<<-list(primary_outcome=outcome_struct,secondary_outcome=outcome_struct,other_outcome=outcome_struct,condition=condition_struct,arm_group=arm_group_struct,intervention=intervention_struct,eligibility=eligibilit_struct,overall_official=investigator_struct,address=address_struct,link=link_struct,reference=reference_struct,results_reference=reference_struct,responsible_party=responsible_party_struct,group=group_struct,participants=participant_struct)
+participants_list_struct<-c("participants_list_id")
+milestone_struct<-c("title")
+other_tables<<-list(primary_outcome=outcome_struct,secondary_outcome=outcome_struct,other_outcome=outcome_struct,condition=condition_struct,arm_group=arm_group_struct,intervention=intervention_struct,eligibility=eligibilit_struct,overall_official=investigator_struct,address=address_struct,link=link_struct,reference=reference_struct,results_reference=reference_struct,responsible_party=responsible_party_struct,group=group_struct,participants=participant_struct,participants_list=participants_list_struct,milestone=milestone_struct)
 
 temporary_variables<<-paste(names(other_tables),"temp",sep="_")
 for(var in temporary_variables){assign(var,NULL)}
 
-xmlNodesResults<<-c("group","participants")
+xmlNodesResults<<-c("group","participants","participants_list","milestone")
 create_observation<-function(file)
 {
 xmlDoc<-xmlTreeParse(file)
