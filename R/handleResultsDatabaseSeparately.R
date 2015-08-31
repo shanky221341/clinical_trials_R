@@ -5,14 +5,20 @@ handleResultsDatabaseSeparately<-function(file){
   xmltop<<-xmlRoot(xmlDoc)
   node_temp<-getNodeSet(xmltop,"//nct_id")
    assign(xmlName(node_temp[[1]]),xmlValue(node_temp[[1]]),envir = .GlobalEnv)
-  xmlNodes<<-c("group","recruitment_details","pre_assignment_details","participants","participants_list","milestone")
+  xmlNodes<<-c("group","recruitment_details","pre_assignment_details","participants","participants_list","milestone","baseline/measure_list/measure")
   
   for(node in xmlNodes){
   
     if(node %in% names(other_tables))
       {
-      # print(node)
+      if(node=='baseline/measure_list/measure')
+      {
+        table_name<-'measure'
+      }else{
         table_name<-node
+      }
+      # print(node)
+        
         nodeAddress<-paste("//",node,sep="")
         subnode<<-getNodeSet(xmltop,nodeAddress)
         
