@@ -52,11 +52,11 @@ files<-dir()
 
 sapply(files,function(file) handleResultsDatabaseSeparately(file))
 
-# xml_names<-sapply(xmlNodesResults,function(node)paste(node,"temp",sep="_"))
-# 
-# for(i in 1:length(xmlNodesResults)){
-#   assign(xmlNodesResults[i],eval(parse(text=xml_names[i])),envir = .GlobalEnv)  
-# }
+xml_names<-sapply(xmlNodesResults,function(node)paste(node,"temp",sep="_"))
+
+for(i in 1:length(xmlNodesResults)){
+  assign(xmlNodesResults[i],eval(parse(text=xml_names[i])),envir = .GlobalEnv)  
+}
 print("hi")
 rm(list=temporary_variables)
 observation<-temp

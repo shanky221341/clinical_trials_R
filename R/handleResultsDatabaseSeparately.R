@@ -6,7 +6,6 @@ handleResultsDatabaseSeparately<-function(file){
   node_temp<-getNodeSet(xmltop,"//nct_id")
   assign(xmlName(node_temp[[1]]),xmlValue(node_temp[[1]]),envir = .GlobalEnv)
   xmlNodes<<-c("group","participants","participants_list","milestone","baseline/measure_list/measure","baseline/measure_list/measure/category_list")
-  
   for(node in xmlNodes){
   
     if(node %in% names(other_tables))
@@ -136,11 +135,12 @@ handleResultsDatabaseSeparately<-function(file){
         }
     }
     }else{
+      print("hello")
       nodeName<-node
       nodeAddress<-paste("//",node,sep="")
       node<-getNodeSet(xmltop,nodeAddress)
       create_cell(nodeName,node)  
       }
   }
-  
+  print("hello")
 }
