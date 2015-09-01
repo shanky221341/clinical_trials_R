@@ -4,8 +4,8 @@ handleResultsDatabaseSeparately<-function(file){
   xmlDoc<-xmlTreeParse(file)
   xmltop<<-xmlRoot(xmlDoc)
   node_temp<-getNodeSet(xmltop,"//nct_id")
-   assign(xmlName(node_temp[[1]]),xmlValue(node_temp[[1]]),envir = .GlobalEnv)
-  xmlNodes<<-c("group","recruitment_details","pre_assignment_details","participants","participants_list","milestone","baseline/measure_list/measure")
+  assign(xmlName(node_temp[[1]]),xmlValue(node_temp[[1]]),envir = .GlobalEnv)
+  xmlNodes<<-c("group","participants","participants_list","milestone","baseline/measure_list/measure","baseline/measure_list/measure/category_list")
   
   for(node in xmlNodes){
   
@@ -14,9 +14,14 @@ handleResultsDatabaseSeparately<-function(file){
       if(node=='baseline/measure_list/measure')
       {
         table_name<-'measure'
-      }else{
+      }
+      else{
         table_name<-node
       }
+      if(table_name=="baseline/measure_list/measure/category_list"){
+        table_name<-'category_details'
+      }
+      
       # print(node)
         
         nodeAddress<-paste("//",node,sep="")
@@ -56,6 +61,39 @@ handleResultsDatabaseSeparately<-function(file){
              assign(var_name,rbind(eval(parse(text=var_name)),eval(parse(text=table_name))),envir = .GlobalEnv)
            }
           participant_list_id<<-participant_list_id+1
+          }
+          else if(table_name=='category_details'){
+            category_list_id<<-counter
+            categories<-xmlChildren(node)
+            for (category in categories){
+              subtitle<-getNodeSet(category,"//sub_title")
+            }
+            if(length(subtitle)!=0){
+              # print(xmlValue(subtitle[[1]]))
+              create_cell("sub_titile",subtitle)
+            }else{
+              assign("sub_title",NA,envir = .GlobalEnv)
+            }
+            
+            measurements<-getNodeSet(category,"//measurement_list")
+            measurements<-measurements[[1]]
+            measurements<-xmlChildren(measurements)
+            for(measurement in measurements){
+              group_id<<-xmlGetAttr(measurement,"group_id")
+              value<<-xmlGetAttr(measurement,"value")
+              lower_limit<<-xmlGetAttr(measurement,"lower_limit")
+              if(length(lower_limit)==0)
+                lower_limit<<-NA
+              upper_limit<<-xmlGetAttr(measurement,"upper_limit")
+              if(length(upper_limit)==0)
+                upper_limit<<-NA
+              xmlSubNodes<-c("nct_id","category_list_id","sub_title","group_id","value","lower_limit","upper_limit")
+              char_vect<-sapply(xmlSubNodes,function(x)eval(parse(text=x)))
+              assign(table_name,data.frame(as.list(char_vect)),envir = .GlobalEnv)
+              var_name<-paste(table_name,"temp",sep="_")
+              assign(var_name,rbind(eval(parse(text=var_name)),eval(parse(text=table_name))),envir = .GlobalEnv)
+            }
+            
           }
           else{
           for (node in xmlSubNodes){
@@ -105,6 +143,4 @@ handleResultsDatabaseSeparately<-function(file){
       }
   }
   
-  results<<-data.frame(nct_id,recruitment_details,pre_assignment_details,stringsAsFactors = FALSE)
-  temp1<<-rbind(temp1,results)
 }
