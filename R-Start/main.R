@@ -24,13 +24,16 @@ participant_struct<-c("participant_id")
 participants_list_struct<-c("participants_list_id")
 milestone_struct<-c("title")
 measure_struct<-c("title","description","units","param","dispersion")
-other_tables<<-list(primary_outcome=outcome_struct,secondary_outcome=outcome_struct,other_outcome=outcome_struct,condition=condition_struct,arm_group=arm_group_struct,intervention=intervention_struct,eligibility=eligibilit_struct,overall_official=investigator_struct,address=address_struct,link=link_struct,reference=reference_struct,results_reference=reference_struct,responsible_party=responsible_party_struct,group=group_struct,participants=participant_struct,participants_list=participants_list_struct,milestone=milestone_struct,'baseline/measure_list/measure'=measure_struct,'baseline/measure_list/measure/category_list'=measure_struct)
+results_outcome_struct<-c("type","title","description","time_frame","safety_issue","posting_date","population")
+other_tables<<-list(primary_outcome=outcome_struct,secondary_outcome=outcome_struct,other_outcome=outcome_struct,condition=condition_struct,arm_group=arm_group_struct,intervention=intervention_struct,eligibility=eligibilit_struct,overall_official=investigator_struct,address=address_struct,link=link_struct,reference=reference_struct,results_reference=reference_struct,responsible_party=responsible_party_struct,group=group_struct,participants=participant_struct,participants_list=participants_list_struct,milestone=milestone_struct,'baseline/measure_list/measure'=measure_struct,'baseline/measure_list/measure/category_list'=measure_struct,'outcome_list/outcome'=results_outcome_struct)
 
 temporary_variables<<-paste(names(other_tables),"temp",sep="_")
 for(var in temporary_variables){assign(var,NULL)}
 assign("measure_temp",NULL)
+assign("outcome_temp",NULL)
 assign("category_details_temp",NULL)
-xmlNodesResults<<-c("group","participants","participants_list","milestone","measure","category_details")
+xmlNodesResults<<-c("group","participants","participants_list","milestone","measure","category_details","outcome")
+
 create_observation<-function(file)
 {
 xmlDoc<-xmlTreeParse(file)
