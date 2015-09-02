@@ -64,9 +64,12 @@ handleResultsDatabaseSeparately<-function(file){
           else if(table_name=='category_details'){
             category_list_id<<-counter
             categories<-xmlChildren(node)
+            # print(length(categories))
             for (category in categories){
               subtitle<-getNodeSet(category,"//sub_title")
-            }
+              print(subtitle)
+              # print(category)
+            
             if(length(subtitle)!=0){
               # print(xmlValue(subtitle[[1]]))
               create_cell("sub_titile",subtitle)
@@ -80,6 +83,8 @@ handleResultsDatabaseSeparately<-function(file){
             for(measurement in measurements){
               group_id<<-xmlGetAttr(measurement,"group_id")
               value<<-xmlGetAttr(measurement,"value")
+              if(length(value)==0)
+                value<<-NA
               lower_limit<<-xmlGetAttr(measurement,"lower_limit")
               if(length(lower_limit)==0)
                 lower_limit<<-NA
@@ -92,7 +97,7 @@ handleResultsDatabaseSeparately<-function(file){
               var_name<-paste(table_name,"temp",sep="_")
               assign(var_name,rbind(eval(parse(text=var_name)),eval(parse(text=table_name))),envir = .GlobalEnv)
             }
-            
+            }
           }
           else{
           for (node in xmlSubNodes){
