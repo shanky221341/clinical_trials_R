@@ -5,8 +5,9 @@ handleResultsDatabaseSeparately <- function(file) {
     xmltop <<- xmlRoot(xmlDoc)
     node_temp <- getNodeSet(xmltop, "//nct_id")
     assign(xmlName(node_temp[[1]]), xmlValue(node_temp[[1]]), envir = .GlobalEnv)
-    xmlNodes <<- c("group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
+    xmlNodes <<- c("participant_flow","group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
         "outcome_list/outcome", "outcome_list/outcome/group_list")
+    xmlNodes <<- c("participant_flow")
     for (node in xmlNodes) {
         
         if (node %in% names(other_tables)) {
@@ -30,7 +31,6 @@ handleResultsDatabaseSeparately <- function(file) {
             
             nodeAddress <- paste("//", node, sep = "")
             subnode <<- getNodeSet(xmltop, nodeAddress)
-            
             xmlSubNodes <- other_tables[[node]]
             
             counter = 0
@@ -124,13 +124,18 @@ handleResultsDatabaseSeparately <- function(file) {
                   }
                 } else {
                   for (node in xmlSubNodes) {
+                    print(counter)
                     nodeName <- node
                     nodeAddress <- paste("//", node, sep = "")
                     node <- getNodeSet(sub_node, nodeAddress)
-                    if (!(nodeName %in% c("nct_id", "group_id", "count", "participant_list_id"))) 
+                    if (!(nodeName %in% c("nct_id", "group_id", "count", "participant_list_id","group_list_id","period_list_id"))) 
                       create_cell(nodeName, node)
                     if (xmlName(sub_node) == "participants") {
                       participant_id <<- counter
+                    }
+                    if(xmlName(sub_node)=="participant_flow"){
+                      group_list_id<<-file_counter
+                      period_list_id<<-file_counter
                     }
                   }
                   if (counter == 1) {
@@ -146,7 +151,10 @@ handleResultsDatabaseSeparately <- function(file) {
                   if (counter == 1 & xmlName(sub_node) == "milestone") {
                     xmlSubNodes <- append("participant_list_id", xmlSubNodes)
                   }
-                  
+                  if(counter == 1 & table_name == "participant_flow"){
+                    xmlSubNodes <- append("group_list_id", xmlSubNodes)
+                    xmlSubNodes <- append("period_list_id", xmlSubNodes)
+                  }
                   for (i in 1:length(xmlSubNodes)) {
                     if (grepl("/", xmlSubNodes[i])) {
                       xmlSubNodes[i] <- unlist(strsplit(xmlSubNodes[i], split = "/"))[1]
