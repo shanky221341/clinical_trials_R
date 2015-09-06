@@ -7,7 +7,7 @@ handleResultsDatabaseSeparately <- function(file) {
     assign(xmlName(node_temp[[1]]), xmlValue(node_temp[[1]]), envir = .GlobalEnv)
     xmlNodes <<- c("participant_flow","group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
         "outcome_list/outcome", "outcome_list/outcome/group_list")
-    xmlNodes <<- c("participant_flow")
+    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group')
     for (node in xmlNodes) {
         
         if (node %in% names(other_tables)) {
@@ -26,7 +26,9 @@ handleResultsDatabaseSeparately <- function(file) {
                 table_name <- "outcome_group"
                 node <- "outcome_list/outcome"
             }
-            
+            if(table_name=='participant_flow/group_list/group'){
+              table_name<-"group_list"
+            }
             
             
             nodeAddress <- paste("//", node, sep = "")
@@ -37,7 +39,7 @@ handleResultsDatabaseSeparately <- function(file) {
             for (node in subnode) {
                 counter = counter + 1
                 sub_node <<- node
-                if (xmlName(sub_node) == "group") {
+                if (xmlName(sub_node) == "group" |xmlName(sub_node) == "group_list" ) {
                   group_id <<- xmlGetAttr(sub_node, "group_id")
                 }
                 if (xmlName(sub_node) == "participants") {
@@ -124,7 +126,6 @@ handleResultsDatabaseSeparately <- function(file) {
                   }
                 } else {
                   for (node in xmlSubNodes) {
-                    print(counter)
                     nodeName <- node
                     nodeAddress <- paste("//", node, sep = "")
                     node <- getNodeSet(sub_node, nodeAddress)
@@ -137,12 +138,16 @@ handleResultsDatabaseSeparately <- function(file) {
                       group_list_id<<-file_counter
                       period_list_id<<-file_counter
                     }
+                    if(xmlName(sub_node)=="group"){
+                      group_list_id<<-file_counter
+                    }
                   }
                   if (counter == 1) {
                     xmlSubNodes <- append("nct_id", xmlSubNodes)
                   }
                   if (counter == 1 & xmlName(sub_node) == "group") {
                     xmlSubNodes <- append("group_id", xmlSubNodes)
+                    xmlSubNodes <- append(xmlSubNodes,"group_list_id")
                   }
                   if (counter == 1 & xmlName(sub_node) == "participants") {
                     xmlSubNodes <- append("group_id", xmlSubNodes)

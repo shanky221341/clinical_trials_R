@@ -31,7 +31,7 @@ other_tables <<- list(primary_outcome = outcome_struct, secondary_outcome = outc
     intervention = intervention_struct, eligibility = eligibilit_struct, overall_official = investigator_struct, address = address_struct, link = link_struct, reference = reference_struct, 
     results_reference = reference_struct, responsible_party = responsible_party_struct, group = group_struct, participants = participant_struct, participants_list = participants_list_struct, 
     milestone = milestone_struct, `baseline/measure_list/measure` = measure_struct, `baseline/measure_list/measure/category_list` = measure_struct, `outcome_list/outcome` = results_outcome_struct, 
-    `outcome_list/outcome/group_list` = results_outcome_struct_group,participant_flow=participant_flow_struct)
+    `outcome_list/outcome/group_list` = results_outcome_struct_group,participant_flow=participant_flow_struct,'participant_flow/group_list/group'=group_struct)
 
 temporary_variables <<- paste(names(other_tables), "temp", sep = "_")
 for (var in temporary_variables) {
@@ -41,7 +41,8 @@ assign("measure_temp", NULL)
 assign("outcome_temp", NULL)
 assign("category_details_temp", NULL)
 assign("outcome_group_temp", NULL)
-xmlNodesResults <<- c("group", "participants", "participants_list", "milestone", "measure", "category_details", "outcome", "outcome_group","participant_flow")
+assign("group_list_temp", NULL)
+xmlNodesResults <<- c("group", "participants", "participants_list", "milestone", "measure", "category_details", "outcome", "outcome_group","participant_flow","group_list")
 
 create_observation <- function(file) {
     xmlDoc <- xmlTreeParse(file)
