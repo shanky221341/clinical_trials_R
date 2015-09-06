@@ -10,12 +10,13 @@ CREATE TABLE participants_flow (
 );
 
 CREATE TABLE group_list (
-  s.no  integer NOT NULL,
+  s_no  integer NOT NULL,
   nct_id         varchar(50),
   group_id       text,
   title          text,
   description    text,
-  group_list_id  integer NOT NULL, 
+  group_list_id  integer NOT NULL,
+  PRIMARY KEY ( nct_id,group_id,group_list_id),
   /* Foreign keys */
   CONSTRAINT Foreign_key01
     FOREIGN KEY (group_list_id)

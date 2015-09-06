@@ -7,7 +7,7 @@ handleResultsDatabaseSeparately <- function(file) {
     assign(xmlName(node_temp[[1]]), xmlValue(node_temp[[1]]), envir = .GlobalEnv)
     xmlNodes <<- c("participant_flow","group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
         "outcome_list/outcome", "outcome_list/outcome/group_list")
-    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group')
+    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period')
     for (node in xmlNodes) {
         
         if (node %in% names(other_tables)) {
@@ -29,6 +29,9 @@ handleResultsDatabaseSeparately <- function(file) {
             if(table_name=='participant_flow/group_list/group'){
               table_name<-"group_list"
             }
+           if(table_name=='participant_flow/period_list/period'){
+             table_name<-"period_list"
+           }
             
             
             nodeAddress <- paste("//", node, sep = "")
@@ -129,7 +132,7 @@ handleResultsDatabaseSeparately <- function(file) {
                     nodeName <- node
                     nodeAddress <- paste("//", node, sep = "")
                     node <- getNodeSet(sub_node, nodeAddress)
-                    if (!(nodeName %in% c("nct_id", "group_id", "count", "participant_list_id","group_list_id","period_list_id"))) 
+                    if (!(nodeName %in% c("nct_id", "group_id", "count", "participant_list_id","group_list_id","period_list_id","milestone_list_id","reason_list"))) 
                       create_cell(nodeName, node)
                     if (xmlName(sub_node) == "participants") {
                       participant_id <<- counter
@@ -140,6 +143,20 @@ handleResultsDatabaseSeparately <- function(file) {
                     }
                     if(xmlName(sub_node)=="group"){
                       group_list_id<<-file_counter
+                    }
+                    if(xmlName(sub_node)=='period'){
+                      period_list_id<<-file_counter
+                      milestone_list_id<<-milestone_list_id+1
+                      test<-getNodeSet(xmltop,"//participant_flow/period_list/period/drop_withdraw_reason_list")
+                      if(length(test)!=0){
+                        temp3<<-temp3+1
+                        drop_withdraw_reason_list_id<<-temp3
+                        reason_list<<-"exists"
+                      }else{
+                        reason_list<<-"does_not_exists"
+                        drop_withdraw_reason_list_id<-"does_not_exists"
+                      }
+                        
                     }
                   }
                   if (counter == 1) {
@@ -159,6 +176,12 @@ handleResultsDatabaseSeparately <- function(file) {
                   if(counter == 1 & table_name == "participant_flow"){
                     xmlSubNodes <- append("group_list_id", xmlSubNodes)
                     xmlSubNodes <- append("period_list_id", xmlSubNodes)
+                  }
+                  if(counter==1 & table_name=='period_list'){
+                    xmlSubNodes<-append(xmlSubNodes,"period_list_id")
+                    xmlSubNodes<-append(xmlSubNodes,"milestone_list_id")
+                    xmlSubNodes<-append(xmlSubNodes,"drop_withdraw_reason_list_id")
+                    xmlSubNodes<-append(xmlSubNodes,"reason_list")
                   }
                   for (i in 1:length(xmlSubNodes)) {
                     if (grepl("/", xmlSubNodes[i])) {

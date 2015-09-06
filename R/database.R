@@ -1,6 +1,5 @@
-library(RSQLite)
-driver<-SQLite()
-conn<-dbConnect(driver,dbname="../clinical_trials.sqlite")
+
+insetInto_tables_in_sqlite<-function(){
 if(exists("participant_flow")){
   print("processing")
 row_count<-nrow(participant_flow)
@@ -29,3 +28,18 @@ if(exists("group_list")){
   )
 }
 dbCommit(conn)
+if(exists("period_list")){
+  print("processing")
+  row_count<-nrow(period_list)
+  s_no<-seq(1, row_count, by = 1)
+  period_list<-data.frame(s_no,period_list)
+  
+  sql <- "INSERT INTO period_list
+  VALUES ($s_no, $nct_id, $title,$period_list_id,$milestone_list_id,$drop_withdraw_reason_list_id,$reason_list)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = period_list),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+}
