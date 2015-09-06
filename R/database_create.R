@@ -45,4 +45,18 @@ FOREIGN KEY (period_list_id)
 REFERENCES participants_flow(period_list_id)
 )"
 dbSendQuery(conn,sql)
+
+sql<-"CREATE TABLE milestone_list (
+  s_no  integer NOT NULL,
+nct_id         varchar(50),
+title          text,
+milestone_list_id  integer NOT NULL,
+participants_list_id integer,
+PRIMARY KEY ( nct_id,participants_list_id),
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (milestone_list_id)
+REFERENCES period_list(milestone_list_id)
+)"
+dbSendQuery(conn,sql)
 }
