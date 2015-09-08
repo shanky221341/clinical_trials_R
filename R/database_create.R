@@ -59,4 +59,17 @@ FOREIGN KEY (milestone_list_id)
 REFERENCES period_list(milestone_list_id)
 )"
 dbSendQuery(conn,sql)
+
+sql<-"CREATE TABLE participants_list (
+  s_no  integer NOT NULL,
+nct_id         varchar(50),
+group_id          text,
+count  text,
+participants_list_id integer,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (participants_list_id)
+REFERENCES participants_list(participants_list_id)
+)"
+dbSendQuery(conn,sql)
 }

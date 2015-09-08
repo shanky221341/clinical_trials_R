@@ -56,4 +56,19 @@ if(exists("milestone_list")){
   )
 }
 dbCommit(conn)
+if(exists("participants_list")){
+  print("processing")
+  row_count<-nrow(participants_list)
+  s_no<-seq(1, row_count, by = 1)
+  participants_list<-data.frame(s_no,participants_list)
+  names(participants_list)[5]<-"participants_list_id"
+  
+  sql <- "INSERT INTO participants_list
+  VALUES ($s_no, $nct_id, $group_id,$count,$participants_list_id)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = participants_list),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
 }

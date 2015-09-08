@@ -29,13 +29,14 @@ results_outcome_struct <- c("type", "title", "description", "time_frame", "safet
 results_outcome_struct_group <- c("NULL")
 participant_flow_struct<-c("recruitment_details","pre_assignment_details")
 period_list_struct<-c("title")
+participants_list_struct1<-c("NULL")
 
 other_tables <<- list(primary_outcome = outcome_struct, secondary_outcome = outcome_struct, other_outcome = outcome_struct, condition = condition_struct, arm_group = arm_group_struct, 
     intervention = intervention_struct, eligibility = eligibilit_struct, overall_official = investigator_struct, address = address_struct, link = link_struct, reference = reference_struct, 
     results_reference = reference_struct, responsible_party = responsible_party_struct, group = group_struct, participants = participant_struct, participants_list = participants_list_struct, 
     milestone = milestone_struct, `baseline/measure_list/measure` = measure_struct, `baseline/measure_list/measure/category_list` = measure_struct, `outcome_list/outcome` = results_outcome_struct, 
     `outcome_list/outcome/group_list` = results_outcome_struct_group,participant_flow=participant_flow_struct,'participant_flow/group_list/group'=group_struct,'participant_flow/period_list/period'=period_list_struct,
-    'participant_flow/period_list/period/milestone_list/milestone'=milestone_struct)
+    'participant_flow/period_list/period/milestone_list/milestone'=milestone_struct,"participant_flow/period_list/period/milestone_list/milestone/participants_list"=participants_list_struct1)
 
 temporary_variables <<- paste(names(other_tables), "temp", sep = "_")
 for (var in temporary_variables) {
@@ -48,7 +49,9 @@ assign("outcome_group_temp", NULL)
 assign("group_list_temp", NULL)
 assign("period_list_temp",NULL)
 assign("milestone_list_temp",NULL)
-xmlNodesResults <<- c("group", "participants", "participants_list", "milestone", "measure", "category_details", "outcome", "outcome_group","participant_flow","group_list","period_list","milestone_list")
+assign("participants_list_temp",NULL)
+
+xmlNodesResults <<- c("group", "participants", "participants_list", "milestone", "measure", "category_details", "outcome", "outcome_group","participant_flow","group_list","period_list","milestone_list","participants_list")
 
 create_observation <- function(file) {
     xmlDoc <- xmlTreeParse(file)
@@ -76,6 +79,7 @@ file_counter<<-0
 milestone_list_id<<-0
 participants_list_id<<-0
 temp3<<-0
+temp4<<-1
 for(file in files){
   file_counter<<-file_counter+1
   handleResultsDatabaseSeparately(file)
@@ -97,6 +101,7 @@ rm(period_list_temp)
 rm(milestone_list_temp)
 rm(temp)
 rm(temp1)
+# rm(participants_list_temp)
 
 library(RSQLite)
 cat("Connecting to Sqlite database...\n")

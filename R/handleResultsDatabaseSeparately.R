@@ -7,7 +7,7 @@ handleResultsDatabaseSeparately <- function(file) {
     assign(xmlName(node_temp[[1]]), xmlValue(node_temp[[1]]), envir = .GlobalEnv)
     xmlNodes <<- c("participant_flow","group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
         "outcome_list/outcome", "outcome_list/outcome/group_list")
-    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone")
+    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone","participant_flow/period_list/period/milestone_list/milestone/participants_list")
         
     for (node in xmlNodes) {
         
@@ -36,6 +36,9 @@ handleResultsDatabaseSeparately <- function(file) {
           if(table_name=="participant_flow/period_list/period/milestone_list/milestone"){
             table_name<-'milestone_list'
           }
+          if(table_name=="participant_flow/period_list/period/milestone_list/milestone/participants_list"){
+            table_name<-"participants_list"
+          }
             
             
             nodeAddress <- paste("//", node, sep = "")
@@ -58,13 +61,13 @@ handleResultsDatabaseSeparately <- function(file) {
                   participants_list_id<<-participants_list_id+1
                 }
                 if (table_name == "participants_list") {
-                  participant_list_id <<- counter
                   children_list <- xmlChildren(node)
                   for (child in children_list) {
                     
                     group_id <<- xmlGetAttr(child, "group_id")
                     count <<- xmlGetAttr(child, "count")
-                    
+                    participant_list_id <<- temp4 
+                    # print(participant_list_id)
                     xmlSubNodes <- c("nct_id", "group_id", "count", "participant_list_id")
                     
                     char_vect <- sapply(xmlSubNodes, function(x) eval(parse(text = x)))
@@ -72,8 +75,9 @@ handleResultsDatabaseSeparately <- function(file) {
                     var_name <- paste(table_name, "temp", sep = "_")
                     # print(var_name)
                     assign(var_name, rbind(eval(parse(text = var_name)), eval(parse(text = table_name))), envir = .GlobalEnv)
+                    
                   }
-                  participant_list_id <<- participant_list_id + 1
+                  temp4<<-temp4+1
                 } else if (table_name == "category_details") {
                   category_list_id <<- counter
                   categories <- xmlChildren(node)
