@@ -103,4 +103,50 @@ FOREIGN KEY (nct_id)
 REFERENCES participants_flow(nct_id)
 )"
 dbSendQuery(conn,sql)
+sql<-"CREATE TABLE address (
+nct_id         varchar(50),
+city          text,
+state  text,
+zip text,
+country text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE arm_group (
+nct_id         varchar(50),
+arm_group_label          text,
+arm_group_type  text,
+description text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE condition (
+nct_id         varchar(50),
+condition          text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE eleigibility (
+nct_id         varchar(50),
+study_pop          text,
+sampling_method text,
+criteria text,
+gender text,
+minimum_age text,
+maximum_age text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
 }

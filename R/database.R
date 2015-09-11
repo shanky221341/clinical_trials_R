@@ -85,4 +85,48 @@ if(exists("observation")){
   )
 }
 dbCommit(conn)
+if(exists("address")){
+  print("processing address")
+  
+  sql <- "INSERT INTO address
+  VALUES ( $nct_id, $city,$state,$zip,$country)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = address),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("arm_group")){
+  print("processing arm_group")
+  
+  sql <- "INSERT INTO arm_group
+  VALUES ( $nct_id, $arm_group_label,$arm_group_type,$description)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = arm_group),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("condition")){
+  print("processing condition")
+  
+  sql <- "INSERT INTO condition
+  VALUES ( $nct_id, $condition)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = condition),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("eligibility")){
+  print("processing eligibility")
+  
+  sql <- "INSERT INTO eligibility
+  VALUES ( $nct_id, $study_pop,$sampling_method,$criteria,$gender,$minimum_age,$maximum_age)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = eligibility),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
 }
