@@ -74,17 +74,17 @@ create_observation <- function(file) {
 }
 
 files <- dir()
-# sapply(files,function(file) create_observation(file))
+sapply(files,function(file) create_observation(file))
 file_counter<<-0
 milestone_list_id<<-0
 participants_list_id<<-0
 temp3<<-0
 temp4<<-1
-for(file in files){
-  file_counter<<-file_counter+1
-  handleResultsDatabaseSeparately(file)
-}
-# sapply(files, function(file) handleResultsDatabaseSeparately(file))
+# for(file in files){
+#   file_counter<<-file_counter+1
+#   handleResultsDatabaseSeparately(file)
+# }
+ sapply(files, function(file) handleResultsDatabaseSeparately(file))
 
 cat("Processing and parsing files...\n")
 xml_names <- sapply(xmlNodesResults, function(node) paste(node, "temp", sep = "_"))
@@ -113,7 +113,7 @@ sapply(tables,function(x)dbRemoveTable(conn,x))
 
 cat("Creating the database schema..\n")
 #create the tables(schema in sqlite)
-create_result<-createTables_in_sqlite()
+ create_result<-createTables_in_sqlite()
 
 cat("Inserting the values in the tables in the sqlite database...\n")
 #insert the values in the tables in the sqlite database

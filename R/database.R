@@ -71,4 +71,18 @@ if(exists("participants_list")){
   )
 }
 dbCommit(conn)
+if(exists("observation")){
+  print("processing")
+  row_count<-nrow(observation)
+  s_no<-seq(1, row_count, by = 1)
+  observation<-data.frame(s_no,observation)
+  
+  sql <- "INSERT INTO observation
+  VALUES ($s_no, $nct_id, $brief_title,$acronym,$official_title,$source,$brief_summary,$detailed_description,$overall_status,$start_date,$completion_date,$primary_completion_date,$phase,$study_type,$study_design,$target_duration,$number_of_arms,$number_of_groups,$biospec_retention,$biospec_descr,$verification_date,$lastchanged_date,$firstreceived_date,$firstreceived_results_date)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = observation),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
 }

@@ -69,7 +69,38 @@ participants_list_id integer,
 /* Foreign keys */
 CONSTRAINT Foreign_key01
 FOREIGN KEY (participants_list_id)
-REFERENCES participants_list(participants_list_id)
+REFERENCES milestone_list(participants_list_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE observation (
+  s_no  integer NOT NULL,
+nct_id         varchar(50),
+brief_title          text,
+acronym  text,
+official_title text,
+source text,
+brief_summary text,
+detailed_description text,
+overall_status text,
+start_date text,
+completion_date text,
+primary_completion_date text,
+phase text,
+study_type text,
+study_design text,
+target_duration text,
+number_of_arms text,
+number_of_groups text,
+biospec_retention text,
+biospec_descr text,
+verification_date text,
+lastchanged_date text,
+firstreceived_date text,
+firstreceived_results_date text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES participants_flow(nct_id)
 )"
 dbSendQuery(conn,sql)
 }
