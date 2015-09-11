@@ -135,7 +135,7 @@ FOREIGN KEY (nct_id)
 REFERENCES observation(nct_id)
 )"
 dbSendQuery(conn,sql)
-sql<-"CREATE TABLE eleigibility (
+sql<-"CREATE TABLE eligibility (
 nct_id         varchar(50),
 study_pop          text,
 sampling_method text,
