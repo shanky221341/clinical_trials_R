@@ -1,7 +1,7 @@
 
 insetInto_tables_in_sqlite<-function(){
 if(exists("participant_flow")){
-  print("processing")
+  print("processing participant_flow")
 row_count<-nrow(participant_flow)
 participant_flow_id<-seq(1, row_count, by = 1)
 participant_flow<-data.frame(participant_flow_id,participant_flow)
@@ -15,7 +15,7 @@ tryCatch(dbGetPreparedQuery(conn, sql, bind.data = participant_flow),
 }
 dbCommit(conn)
 if(exists("group_list")){
-  print("processing")
+  print("processing group_list")
   row_count<-nrow(group_list)
   s_no<-seq(1, row_count, by = 1)
   group_list<-data.frame(s_no,group_list)
@@ -29,7 +29,7 @@ if(exists("group_list")){
 }
 dbCommit(conn)
 if(exists("period_list")){
-  print("processing")
+  print("processing period_list")
   row_count<-nrow(period_list)
   s_no<-seq(1, row_count, by = 1)
   period_list<-data.frame(s_no,period_list)
@@ -43,7 +43,7 @@ if(exists("period_list")){
 }
 dbCommit(conn)
 if(exists("milestone_list")){
-  print("processing")
+  print("processing milestone_list")
   row_count<-nrow(milestone_list)
   s_no<-seq(1, row_count, by = 1)
   milestone_list<-data.frame(s_no,milestone_list)
@@ -57,7 +57,7 @@ if(exists("milestone_list")){
 }
 dbCommit(conn)
 if(exists("participants_list")){
-  print("processing")
+  print("processing participants_list")
   row_count<-nrow(participants_list)
   s_no<-seq(1, row_count, by = 1)
   participants_list<-data.frame(s_no,participants_list)
@@ -72,7 +72,7 @@ if(exists("participants_list")){
 }
 dbCommit(conn)
 if(exists("observation")){
-  print("processing")
+  print("processing observation")
   row_count<-nrow(observation)
   s_no<-seq(1, row_count, by = 1)
   observation<-data.frame(s_no,observation)
@@ -125,6 +125,17 @@ if(exists("eligibility")){
   VALUES ( $nct_id, $study_pop,$sampling_method,$criteria,$gender,$minimum_age,$maximum_age)"
   dbBegin(conn)
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = eligibility),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("intervention")){
+  print("processing intervention")
+  
+  sql <- "INSERT INTO intervention
+  VALUES ( $nct_id, $intervention_type,$intervention_name,$description,$arm_group_label,$other_name)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = intervention),
            error=function(e) { print(e) }
   )
 }

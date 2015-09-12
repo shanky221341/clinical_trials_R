@@ -149,4 +149,17 @@ FOREIGN KEY (nct_id)
 REFERENCES observation(nct_id)
 )"
 dbSendQuery(conn,sql)
+sql<-"CREATE TABLE intervention (
+nct_id         varchar(50),
+intervention_type          text,
+intervention_name text,
+description text,
+arm_group_label text,
+other_name text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
 }
