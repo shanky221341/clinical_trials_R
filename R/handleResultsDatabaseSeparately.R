@@ -7,7 +7,7 @@ handleResultsDatabaseSeparately <- function(file) {
     assign(xmlName(node_temp[[1]]), xmlValue(node_temp[[1]]), envir = .GlobalEnv)
     xmlNodes <<- c("participant_flow","group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
         "outcome_list/outcome", "outcome_list/outcome/group_list")
-    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone","participant_flow/period_list/period/milestone_list/milestone/participants_list")
+    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone","participant_flow/period_list/period/milestone_list/milestone/participants_list","baseline")
         
     for (node in xmlNodes) {
         
@@ -150,6 +150,10 @@ handleResultsDatabaseSeparately <- function(file) {
                       group_list_id<<-file_counter
                       period_list_id<<-file_counter
                     }
+                    if(xmlName(sub_node)=="baseline"){
+                      group_list_id<<-file_counter
+                      measure_list_id<<-file_counter
+                    }
                     if(xmlName(sub_node)=="group"){
                       group_list_id<<-file_counter
                     }
@@ -188,6 +192,10 @@ handleResultsDatabaseSeparately <- function(file) {
                   if(counter == 1 & table_name == "participant_flow"){
                     xmlSubNodes <- append("group_list_id", xmlSubNodes)
                     xmlSubNodes <- append("period_list_id", xmlSubNodes)
+                  }
+                  if(counter==1 & table_name=="baseline"){
+                    xmlSubNodes<-append("group_list_id", xmlSubNodes)
+                    xmlSubNodes<-append("measure_list_id",xmlSubNodes)
                   }
                   if(counter==1 & table_name=='period_list'){
                     xmlSubNodes<-append(xmlSubNodes,"period_list_id")

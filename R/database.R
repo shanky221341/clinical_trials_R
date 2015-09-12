@@ -140,4 +140,25 @@ if(exists("intervention")){
   )
 }
 dbCommit(conn)
+if(exists("other_outcome")){
+  print("processing other_outcome")
+  
+  sql <- "INSERT INTO other_outcome
+  VALUES ( $nct_id, $measure,$time_frame,$safety_issue,$description)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = other_outcome),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("baseline")){
+  print("processing baseline")
+  sql <- "INSERT INTO baseline
+  VALUES ( $nct_id, $population,$group_list_id,$measure_list_id)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = baseline),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
 }

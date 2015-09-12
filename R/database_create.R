@@ -10,7 +10,10 @@ pre_assignment_details  text,
 group_list_id           integer,
 period_list_id          integer,
 /* Keys */
-PRIMARY KEY (participant_flow_id, nct_id)
+PRIMARY KEY (participant_flow_id, nct_id),
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
 )"
 
 dbSendQuery(conn,sql)
@@ -96,12 +99,7 @@ biospec_descr text,
 verification_date text,
 lastchanged_date text,
 firstreceived_date text,
-firstreceived_results_date text,
-/* Foreign keys */
-CONSTRAINT Foreign_key01
-FOREIGN KEY (nct_id)
-REFERENCES participants_flow(nct_id)
-)"
+firstreceived_results_date text)"
 dbSendQuery(conn,sql)
 sql<-"CREATE TABLE address (
 nct_id         varchar(50),
@@ -156,6 +154,29 @@ intervention_name text,
 description text,
 arm_group_label text,
 other_name text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE other_outcome (
+nct_id         varchar(50),
+measure          text,
+time_frame text,
+safety_issue text,
+description text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE baseline (
+nct_id         varchar(50),
+population          text,
+group_list_id text,
+measure_list_id text,
 /* Foreign keys */
 CONSTRAINT Foreign_key01
 FOREIGN KEY (nct_id)
