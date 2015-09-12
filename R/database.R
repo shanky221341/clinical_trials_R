@@ -211,4 +211,18 @@ if(exists("secondary_outcome")){
   )
 }
 dbCommit(conn)
+if(exists("group_list_baseline")){
+  print("processing group_list_baseline")
+  row_count<-nrow(group_list_baseline)
+  s_no<-seq(1, row_count, by = 1)
+  group_list_baseline<-data.frame(s_no,group_list_baseline)
+  
+  sql <- "INSERT INTO group_list_baseline
+  VALUES ($s_no, $nct_id, $group_id,$title,$description,$group_list_id)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = group_list_baseline),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
 }

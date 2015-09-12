@@ -245,4 +245,18 @@ FOREIGN KEY (nct_id)
 REFERENCES observation(nct_id)
 )"
 dbSendQuery(conn,sql)
+sql<-"CREATE TABLE group_list_baseline (
+  s_no  integer NOT NULL,
+nct_id         varchar(50),
+group_id       text,
+title          text,
+description    text,
+group_list_id  integer NOT NULL,
+PRIMARY KEY ( nct_id,group_id,group_list_id),
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (group_list_id)
+REFERENCES baseline(group_list_id)
+)"
+dbSendQuery(conn,sql)
 }
