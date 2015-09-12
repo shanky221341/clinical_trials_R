@@ -183,4 +183,66 @@ FOREIGN KEY (nct_id)
 REFERENCES observation(nct_id)
 )"
 dbSendQuery(conn,sql)
+sql<-"CREATE TABLE overall_official (
+nct_id         varchar(50),
+first_name          text,
+last_name text,
+middle_name text,
+degrees text,
+role text,
+affiliation text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE primary_outcome (
+nct_id         varchar(50),
+measure          text,
+time_frame text,
+safety_issue text,
+description text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE reference (
+nct_id         varchar(50),
+citation          text,
+PMID text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE responsible_party (
+nct_id         varchar(50),
+name_title          text,
+organization text,
+responsible_party_type text,
+investigator_affiliation text,
+investigator_full_name text,
+investigator_title text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
+sql<-"CREATE TABLE secondary_outcome (
+nct_id         varchar(50),
+measure          text,
+time_frame text,
+safety_issue text,
+description text,
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (nct_id)
+REFERENCES observation(nct_id)
+)"
+dbSendQuery(conn,sql)
 }

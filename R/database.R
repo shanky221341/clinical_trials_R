@@ -161,4 +161,54 @@ if(exists("baseline")){
   )
 }
 dbCommit(conn)
+if(exists("overall_official")){
+  print("processing overall_official")
+  sql <- "INSERT INTO overall_official
+  VALUES ( $nct_id, $first_name,$last_name,$middle_name,$degrees,$role,$affiliation)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = overall_official),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("primary_outcome")){
+  print("processing primary_outcome")
+  sql <- "INSERT INTO primary_outcome
+  VALUES ( $nct_id, $measure,$time_frame,$safety_issue,$description)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = primary_outcome),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("reference")){
+  print("processing reference")
+  sql <- "INSERT INTO reference
+  VALUES ( $nct_id, $citation,$PMID)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = reference),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("responsible_party")){
+  print("processing responsible_party")
+  sql <- "INSERT INTO responsible_party
+  VALUES ( $nct_id, $name_title,$organization,$responsible_party_type,$investigator_affiliation,$investigator_full_name,$investigator_title)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = responsible_party),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
+if(exists("secondary_outcome")){
+  print("processing secondary_outcome")
+  sql <- "INSERT INTO secondary_outcome
+  VALUES ( $nct_id, $measure,$time_frame,$safety_issue,$description)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = secondary_outcome),
+           error=function(e) { print(e) }
+  )
+}
+dbCommit(conn)
 }
