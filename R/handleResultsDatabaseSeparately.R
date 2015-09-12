@@ -7,7 +7,7 @@ handleResultsDatabaseSeparately <- function(file) {
     assign(xmlName(node_temp[[1]]), xmlValue(node_temp[[1]]), envir = .GlobalEnv)
     xmlNodes <<- c("participant_flow","group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
         "outcome_list/outcome", "outcome_list/outcome/group_list")
-    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone","participant_flow/period_list/period/milestone_list/milestone/participants_list","baseline")
+    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone","participant_flow/period_list/period/milestone_list/milestone/participants_list","baseline","baseline/group_list/group")
         
     for (node in xmlNodes) {
         
@@ -39,7 +39,9 @@ handleResultsDatabaseSeparately <- function(file) {
           if(table_name=="participant_flow/period_list/period/milestone_list/milestone/participants_list"){
             table_name<-"participants_list"
           }
-            
+          if(table_name=='baseline/group_list/group'){
+            table_name<-"group_list_baseline"
+          }
             
             nodeAddress <- paste("//", node, sep = "")
             subnode <<- getNodeSet(xmltop, nodeAddress)
