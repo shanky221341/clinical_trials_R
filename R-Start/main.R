@@ -37,7 +37,7 @@ other_tables <<- list(primary_outcome = outcome_struct, secondary_outcome = outc
     results_reference = reference_struct, responsible_party = responsible_party_struct, group = group_struct, participants = participant_struct, participants_list = participants_list_struct, 
     milestone = milestone_struct, `baseline/measure_list/measure` = measure_struct, `baseline/measure_list/measure/category_list` = measure_struct, `outcome_list/outcome` = results_outcome_struct, 
     `outcome_list/outcome/group_list` = results_outcome_struct_group,participant_flow=participant_flow_struct,'participant_flow/group_list/group'=group_struct,'participant_flow/period_list/period'=period_list_struct,
-    'participant_flow/period_list/period/milestone_list/milestone'=milestone_struct,"participant_flow/period_list/period/milestone_list/milestone/participants_list"=participants_list_struct1,baseline=baseline_struct,'baseline/group_list/group'=group_struct)
+    'participant_flow/period_list/period/milestone_list/milestone'=milestone_struct,"participant_flow/period_list/period/milestone_list/milestone/participants_list"=participants_list_struct1,baseline=baseline_struct,'baseline/group_list/group'=group_struct,'baseline/measure_list/measure'=measure_struct)
 
 temporary_variables <<- paste(names(other_tables), "temp", sep = "_")
 for (var in temporary_variables) {
@@ -52,7 +52,8 @@ assign("period_list_temp",NULL)
 assign("milestone_list_temp",NULL)
 assign("participants_list_temp",NULL)
 assign("group_list_baseline_temp",NULL)
-xmlNodesResults <<- c("group", "participants", "participants_list", "milestone", "measure", "category_details", "outcome", "outcome_group","participant_flow","group_list","period_list","milestone_list","participants_list","baseline","group_list_baseline")
+assign("measure_list_temp",NULL)
+xmlNodesResults <<- c("group", "participants", "participants_list", "milestone", "measure", "category_details", "outcome", "outcome_group","participant_flow","group_list","period_list","milestone_list","participants_list","baseline","group_list_baseline","measure_list")
 
 create_observation <- function(file) {
     xmlDoc <- xmlTreeParse(file)
@@ -79,6 +80,7 @@ sapply(files,function(file) create_observation(file))
 file_counter<<-0
 milestone_list_id<<-0
 participants_list_id<<-0
+category_list_id<<-0
 temp3<<-0
 temp4<<-1
 for(file in files){
@@ -100,6 +102,7 @@ rm(group_list_temp)
 rm(period_list_temp)
 rm(milestone_list_temp)
 rm(group_list_baseline_temp)
+rm(measure_list_temp)
 rm(temp)
 rm(temp1)
 # rm(participants_list_temp)

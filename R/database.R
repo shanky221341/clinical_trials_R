@@ -1,6 +1,6 @@
 
 insetInto_tables_in_sqlite<-function(){
-if(exists("participant_flow")){
+if(exists("participant_flow")& is.data.frame(participant_flow)){
   print("processing participant_flow")
 row_count<-nrow(participant_flow)
 participant_flow_id<-seq(1, row_count, by = 1)
@@ -12,9 +12,10 @@ dbBegin(conn)
 tryCatch(dbGetPreparedQuery(conn, sql, bind.data = participant_flow),
          error=function(e) { print(e) }
 )
-}
 dbCommit(conn)
-if(exists("group_list")){
+}
+
+if(exists("group_list") & is.data.frame(group_list)){
   print("processing group_list")
   row_count<-nrow(group_list)
   s_no<-seq(1, row_count, by = 1)
@@ -26,9 +27,9 @@ if(exists("group_list")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = group_list),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("period_list")){
+if(exists("period_list")& is.data.frame(period_list)){
   print("processing period_list")
   row_count<-nrow(period_list)
   s_no<-seq(1, row_count, by = 1)
@@ -40,9 +41,9 @@ if(exists("period_list")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = period_list),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("milestone_list")){
+if(exists("milestone_list")& is.data.frame(milestone_list)){
   print("processing milestone_list")
   row_count<-nrow(milestone_list)
   s_no<-seq(1, row_count, by = 1)
@@ -54,9 +55,9 @@ if(exists("milestone_list")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = milestone_list),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("participants_list")){
+if(exists("participants_list")& is.data.frame(participants_list)){
   print("processing participants_list")
   row_count<-nrow(participants_list)
   s_no<-seq(1, row_count, by = 1)
@@ -69,9 +70,9 @@ if(exists("participants_list")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = participants_list),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("observation")){
+if(exists("observation")& is.data.frame(observation)){
   print("processing observation")
   row_count<-nrow(observation)
   s_no<-seq(1, row_count, by = 1)
@@ -83,9 +84,9 @@ if(exists("observation")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = observation),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("address")){
+if(exists("address")& is.data.frame(address)){
   print("processing address")
   
   sql <- "INSERT INTO address
@@ -94,9 +95,9 @@ if(exists("address")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = address),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("arm_group")){
+if(exists("arm_group")& is.data.frame(arm_group)){
   print("processing arm_group")
   
   sql <- "INSERT INTO arm_group
@@ -105,9 +106,9 @@ if(exists("arm_group")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = arm_group),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("condition")){
+if(exists("condition")& is.data.frame(condition)){
   print("processing condition")
   
   sql <- "INSERT INTO condition
@@ -116,9 +117,9 @@ if(exists("condition")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = condition),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("eligibility")){
+if(exists("eligibility")& is.data.frame(eligibility)){
   print("processing eligibility")
   
   sql <- "INSERT INTO eligibility
@@ -127,9 +128,9 @@ if(exists("eligibility")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = eligibility),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("intervention")){
+if(exists("intervention")& is.data.frame(intervention)){
   print("processing intervention")
   
   sql <- "INSERT INTO intervention
@@ -138,9 +139,9 @@ if(exists("intervention")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = intervention),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("other_outcome")){
+if(exists("other_outcome")& is.data.frame(other_outcome)){
   print("processing other_outcome")
   
   sql <- "INSERT INTO other_outcome
@@ -149,9 +150,9 @@ if(exists("other_outcome")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = other_outcome),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("baseline")){
+if(exists("baseline")& is.data.frame(baseline)){
   print("processing baseline")
   sql <- "INSERT INTO baseline
   VALUES ( $nct_id, $population,$group_list_id,$measure_list_id)"
@@ -159,9 +160,9 @@ if(exists("baseline")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = baseline),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("overall_official")){
+if(exists("overall_official")& is.data.frame(overall_official)){
   print("processing overall_official")
   sql <- "INSERT INTO overall_official
   VALUES ( $nct_id, $first_name,$last_name,$middle_name,$degrees,$role,$affiliation)"
@@ -169,9 +170,9 @@ if(exists("overall_official")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = overall_official),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("primary_outcome")){
+if(exists("primary_outcome")& is.data.frame(primary_outcome)){
   print("processing primary_outcome")
   sql <- "INSERT INTO primary_outcome
   VALUES ( $nct_id, $measure,$time_frame,$safety_issue,$description)"
@@ -179,9 +180,9 @@ if(exists("primary_outcome")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = primary_outcome),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("reference")){
+if(exists("reference")& is.data.frame(reference)){
   print("processing reference")
   sql <- "INSERT INTO reference
   VALUES ( $nct_id, $citation,$PMID)"
@@ -189,9 +190,9 @@ if(exists("reference")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = reference),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("responsible_party")){
+if(exists("responsible_party")& is.data.frame(responsible_party)){
   print("processing responsible_party")
   sql <- "INSERT INTO responsible_party
   VALUES ( $nct_id, $name_title,$organization,$responsible_party_type,$investigator_affiliation,$investigator_full_name,$investigator_title)"
@@ -199,9 +200,9 @@ if(exists("responsible_party")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = responsible_party),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("secondary_outcome")){
+if(exists("secondary_outcome")& is.data.frame(secondary_outcome)){
   print("processing secondary_outcome")
   sql <- "INSERT INTO secondary_outcome
   VALUES ( $nct_id, $measure,$time_frame,$safety_issue,$description)"
@@ -209,9 +210,9 @@ if(exists("secondary_outcome")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = secondary_outcome),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
-if(exists("group_list_baseline")){
+if(exists("group_list_baseline")& is.data.frame(group_list_baseline)){
   print("processing group_list_baseline")
   row_count<-nrow(group_list_baseline)
   s_no<-seq(1, row_count, by = 1)
@@ -223,6 +224,20 @@ if(exists("group_list_baseline")){
   tryCatch(dbGetPreparedQuery(conn, sql, bind.data = group_list_baseline),
            error=function(e) { print(e) }
   )
+  dbCommit(conn)
 }
-dbCommit(conn)
+if(exists("measure_list")& is.data.frame(measure_list)){
+  print("processing measure_list")
+  row_count<-nrow(measure_list)
+  s_no<-seq(1, row_count, by = 1)
+  measure_list<-data.frame(s_no,measure_list)
+  
+  sql <- "INSERT INTO measure_list
+  VALUES ($s_no, $nct_id,$title,$description,$units,$param,$dispersion,$measure_list_id,$category_list_id)"
+  dbBegin(conn)
+  tryCatch(dbGetPreparedQuery(conn, sql, bind.data = measure_list),
+           error=function(e) { print(e) }
+  )
+  dbCommit(conn)
+}
 }

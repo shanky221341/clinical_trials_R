@@ -259,4 +259,21 @@ FOREIGN KEY (group_list_id)
 REFERENCES baseline(group_list_id)
 )"
 dbSendQuery(conn,sql)
+sql<-"CREATE TABLE measure_list (
+  s_no  integer NOT NULL,
+nct_id         varchar(50),
+title          text,
+description    text,
+units  text ,
+param text,
+dispersion text,
+measure_list_id text,
+category_list_id text,
+PRIMARY KEY ( category_list_id),
+/* Foreign keys */
+CONSTRAINT Foreign_key01
+FOREIGN KEY (measure_list_id)
+REFERENCES baseline(measure_list_id)
+)"
+dbSendQuery(conn,sql)
 }

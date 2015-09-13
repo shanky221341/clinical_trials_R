@@ -7,13 +7,12 @@ handleResultsDatabaseSeparately <- function(file) {
     assign(xmlName(node_temp[[1]]), xmlValue(node_temp[[1]]), envir = .GlobalEnv)
     xmlNodes <<- c("participant_flow","group", "participants", "participants_list", "milestone", "baseline/measure_list/measure", "baseline/measure_list/measure/category_list", 
         "outcome_list/outcome", "outcome_list/outcome/group_list")
-    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone","participant_flow/period_list/period/milestone_list/milestone/participants_list","baseline","baseline/group_list/group")
-        
+    xmlNodes <<- c("participant_flow",'participant_flow/group_list/group','participant_flow/period_list/period',"participant_flow/period_list/period/milestone_list/milestone","participant_flow/period_list/period/milestone_list/milestone/participants_list","baseline","baseline/group_list/group","baseline/measure_list/measure")
     for (node in xmlNodes) {
         
         if (node %in% names(other_tables)) {
             if (node == "baseline/measure_list/measure") {
-                table_name <- "measure"
+                table_name <- "measure_list"
             } else {
                 table_name <- node
             }
@@ -61,6 +60,9 @@ handleResultsDatabaseSeparately <- function(file) {
                 if (xmlName(sub_node) == "milestone") {
                   participant_list_id <<- counter
                   participants_list_id<<-participants_list_id+1
+                }
+                if(xmlName(sub_node)=='measure'){
+                  category_list_id<<-category_list_id+1
                 }
                 if (table_name == "participants_list") {
                   children_list <- xmlChildren(node)
@@ -143,7 +145,7 @@ handleResultsDatabaseSeparately <- function(file) {
                     nodeName <- node
                     nodeAddress <- paste("//", node, sep = "")
                     node <- getNodeSet(sub_node, nodeAddress)
-                    if (!(nodeName %in% c("nct_id", "group_id", "count", "participant_list_id","group_list_id","period_list_id","milestone_list_id","reason_list","participants_list_id"))) 
+                    if (!(nodeName %in% c("nct_id", "group_id", "count", "participant_list_id","group_list_id","period_list_id","milestone_list_id","reason_list","participants_list_id","measure_list_id",'category_list_id'))) 
                       create_cell(nodeName, node)
                     if (xmlName(sub_node) == "participants") {
                       participant_id <<- counter
@@ -175,6 +177,9 @@ handleResultsDatabaseSeparately <- function(file) {
                     }
                     if(table_name=='milestone_list'){
                       milestone_list_id<<-file_counter
+                    }
+                    if(table_name=='measure_list'){
+                      measure_list_id<<-file_counter
                     }
                   }
                   if (counter == 1) {
@@ -208,6 +213,11 @@ handleResultsDatabaseSeparately <- function(file) {
                   if(counter==1 &table_name=='milestone_list'){
                     xmlSubNodes<-append(xmlSubNodes,'milestone_list_id')
                     xmlSubNodes<-append(xmlSubNodes,'participants_list_id')
+                  }
+                  if(counter==1 &table_name=='measure_list'){
+                    xmlSubNodes<-append(xmlSubNodes,'measure_list_id')
+                    xmlSubNodes<-append(xmlSubNodes,'category_list_id')
+                    print(category_list_id)
                   }
                   
                   for (i in 1:length(xmlSubNodes)) {
